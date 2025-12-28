@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "bun run scripts/update-version.ts",
     "build": "next build",
     "start": "serve out",
     "lint": "next lint"
   },
   "dependencies": {
+    "highlight.js": "^11.11.1",
     "next": "^16.1.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"

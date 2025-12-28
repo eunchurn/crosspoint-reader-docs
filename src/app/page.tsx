@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { BootScreen } from "@/components/BootScreen";
 import { CROSSPOINT_VERSION } from "@/constants/version";
 import { getContributors, type Contributor } from "@/lib/github";
 import { getAssetPath } from "@/lib/basePath";
@@ -115,14 +116,7 @@ export default async function Home() {
               </div>
 
               <div className="flex justify-center lg:justify-end">
-                <Image
-                  src={getAssetPath("/x4-crosspoint-boot.svg")}
-                  alt="Xteink X4 CrossPoint 부팅 화면"
-                  width={400}
-                  height={600}
-                  className="w-auto h-auto max-h-[500px] drop-shadow-2xl"
-                  priority
-                />
+                <BootScreen className="w-auto h-auto max-h-[500px] drop-shadow-2xl" />
               </div>
             </div>
           </div>

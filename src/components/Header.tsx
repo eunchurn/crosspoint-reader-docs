@@ -11,6 +11,7 @@ const navigation = [
   { name: "사용자 가이드", href: "/guide" },
   { name: "웹 서버", href: "/webserver" },
   { name: "한글 폰트", href: "/korean-font" },
+  { name: "릴리즈", href: "/releases" },
 ];
 
 export default function Header() {

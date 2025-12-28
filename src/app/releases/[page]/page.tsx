@@ -1,0 +1,599 @@
+import { getReleases, type Release } from "@/lib/github";
+import { CROSSPOINT_VERSION } from "@/constants/version";
+import Link from "next/link";
+import hljs from "highlight.js";
+
+export const metadata = {
+  title: "릴리즈 노트",
+  description: "CrossPoint Reader 한국어 펌웨어 릴리즈 노트 및 변경사항",
+};
+
+const ITEMS_PER_PAGE = 3;
+
+// 빌드 타임에 모든 페이지 생성
+export async function generateStaticParams() {
+  const releases = await getReleases();
+  const totalPages = Math.ceil(releases.length / ITEMS_PER_PAGE);
+
+  return Array.from({ length: totalPages }, (_, i) => ({
+    page: String(i + 1),
+  }));
+}
+
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  const year = date.getUTCFullYear();
+  const month = date.getUTCMonth() + 1;
+  const day = date.getUTCDate();
+  return `${year}년 ${month}월 ${day}일`;
+}
+
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return bytes + " B";
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+  return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+}
+
+function applyInlineFormatting(text: string): string {
+  // 1. 인라인 코드 백틱 보존 (내부 HTML 이스케이프)
+  const codeSegments: string[] = [];
+  let result = text.replace(/`([^`]+)`/g, (_, code) => {
+    // 플레이스홀더에 HTML 특수문자 사용하지 않음
+    const placeholder = `__INLINE_CODE_${codeSegments.length}__`;
+    const escapedCode = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    codeSegments.push(
+      `<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono text-pink-600">${escapedCode}</code>`
+    );
+    return placeholder;
+  });
+
+  // 2. 나머지 HTML 태그 이스케이프
+  result = result.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  // 3. 마크다운 링크
+  result = result.replace(
+    /\[([^\]]+)\]\(([^)]+)\)/g,
+    '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">$1</a>'
+  );
+
+  // 4. 자동 URL 링크
+  result = result.replace(
+    /(?<!["\(=])https?:\/\/[^\s&]+/g,
+    '<a href="$&" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline break-all">$&</a>'
+  );
+
+  // 5. Bold/Italic
+  result = result.replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
+  result = result.replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, "<em>$1</em>");
+
+  // 6. 인라인 코드 복원
+  codeSegments.forEach((html, i) => {
+    result = result.replace(`__INLINE_CODE_${i}__`, html);
+  });
+
+  return result;
+}
+
+function parseMarkdown(text: string): string {
+  if (!text) return "";
+
+  // 줄바꿈 정규화 (Windows \r\n, Mac \r -> Unix \n)
+  text = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+
+  const codeBlocks: string[] = [];
+  let result = text.replace(/```(\w+)?\n([\s\S]*?)```/g, (_, lang, code) => {
+    const placeholder = `<!--CODE_BLOCK_${codeBlocks.length}-->`;
+    const language = lang || "plaintext";
+    const escapedCode = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+    // 서버에서 highlight.js 적용
+    let highlightedCode: string;
+    try {
+      if (language !== "plaintext" && hljs.getLanguage(language)) {
+        highlightedCode = hljs.highlight(escapedCode, { language }).value;
+      } else {
+        highlightedCode = hljs.highlightAuto(escapedCode).value;
+      }
+    } catch {
+      highlightedCode = escapedCode;
+    }
+
+    codeBlocks.push(
+      `<pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm my-4"><code class="hljs language-${language}">${highlightedCode}</code></pre>`
+    );
+    return placeholder;
+  });
+
+  const lines = result.split("\n");
+  const processedLines: string[] = [];
+  let inList = false;
+
+  for (const line of lines) {
+    let processed = line;
+
+    if (processed.startsWith("<!--CODE_BLOCK_")) {
+      if (inList) {
+        processedLines.push("</ul>");
+        inList = false;
+      }
+      processedLines.push(processed);
+      continue;
+    }
+
+    if (processed.match(/^### /)) {
+      if (inList) {
+        processedLines.push("</ul>");
+        inList = false;
+      }
+      processed = processed.replace(
+        /^### (.+)$/,
+        '<h3 class="text-lg font-semibold mt-4 mb-2">$1</h3>'
+      );
+      processedLines.push(processed);
+      continue;
+    }
+    if (processed.match(/^## /)) {
+      if (inList) {
+        processedLines.push("</ul>");
+        inList = false;
+      }
+      processed = processed.replace(
+        /^## (.+)$/,
+        '<h2 class="text-xl font-bold mt-6 mb-3">$1</h2>'
+      );
+      processedLines.push(processed);
+      continue;
+    }
+
+    if (processed.match(/^[-*] /)) {
+      if (!inList) {
+        processedLines.push(
+          '<ul class="my-2 space-y-1 list-disc list-inside">'
+        );
+        inList = true;
+      }
+      // 먼저 리스트 내용을 추출하고 인라인 포매팅 적용 후 <li>로 감싸기
+      const listContent = processed.replace(/^[-*] (.+)$/, "$1");
+      const formattedContent = applyInlineFormatting(listContent);
+      processedLines.push(`<li>${formattedContent}</li>`);
+      continue;
+    }
+
+    if (inList && processed.trim() !== "") {
+      processedLines.push("</ul>");
+      inList = false;
+    }
+
+    if (processed.trim() === "") {
+      processedLines.push("");
+      continue;
+    }
+
+    processed = applyInlineFormatting(processed);
+    processedLines.push(`<div class="my-2">${processed}</div>`);
+  }
+
+  if (inList) {
+    processedLines.push("</ul>");
+  }
+
+  result = processedLines.join("\n");
+
+  codeBlocks.forEach((block, i) => {
+    result = result.replace(`<!--CODE_BLOCK_${i}-->`, block);
+  });
+
+  return result;
+}
+
+function ReleaseCard({
+  release,
+  isLatest,
+}: {
+  release: Release;
+  isLatest: boolean;
+}) {
+  return (
+    <article
+      className={`rounded-2xl border bg-white p-6 shadow-sm ${
+        isLatest ? "border-blue-200 ring-2 ring-blue-100" : "border-gray-200"
+      }`}
+    >
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-bold text-gray-900">
+              {release.name || release.tag_name}
+            </h2>
+            {isLatest && (
+              <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
+                최신
+              </span>
+            )}
+            {release.prerelease && (
+              <span className="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700">
+                Pre-release
+              </span>
+            )}
+          </div>
+          <div className="mt-2 flex items-center gap-4 text-sm text-gray-500">
+            <span className="flex items-center gap-1">
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 6h.008v.008H6V6z"
+                />
+              </svg>
+              {release.tag_name}
+            </span>
+            <span className="flex items-center gap-1">
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
+                />
+              </svg>
+              {formatDate(release.published_at)}
+            </span>
+          </div>
+        </div>
+        <a
+          href={release.html_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
+        >
+          <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              fillRule="evenodd"
+              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+              clipRule="evenodd"
+            />
+          </svg>
+          GitHub
+        </a>
+      </div>
+
+      {release.body && (
+        <div
+          className="mt-6 prose prose-sm max-w-none text-gray-600 [&_pre]:bg-gray-50 [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:text-sm [&_pre_code]:bg-transparent [&_pre_code]:p-0"
+          dangerouslySetInnerHTML={{
+            __html: parseMarkdown(release.body),
+          }}
+        />
+      )}
+
+      {release.assets.length > 0 && (
+        <div className="mt-6 border-t border-gray-100 pt-6">
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">다운로드</h3>
+          <div className="space-y-2">
+            {release.assets.map((asset) => (
+              <a
+                key={asset.name}
+                href={asset.browser_download_url}
+                className="flex items-center justify-between rounded-lg border border-gray-200 p-3 hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <svg
+                    className="h-5 w-5 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+                    />
+                  </svg>
+                  <span className="text-sm font-medium text-gray-900">
+                    {asset.name}
+                  </span>
+                </div>
+                <div className="flex items-center gap-4 text-xs text-gray-500">
+                  <span>{formatBytes(asset.size)}</span>
+                  <span className="flex items-center gap-1">
+                    <svg
+                      className="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                      />
+                    </svg>
+                    {asset.download_count}
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </article>
+  );
+}
+
+function Pagination({
+  currentPage,
+  totalPages,
+}: {
+  currentPage: number;
+  totalPages: number;
+}) {
+  const renderPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    const maxVisible = 5;
+
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) pages.push(i);
+        pages.push("...");
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push("...");
+        for (let i = totalPages - 3; i <= totalPages; i++) pages.push(i);
+      } else {
+        pages.push(1);
+        pages.push("...");
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) pages.push(i);
+        pages.push("...");
+        pages.push(totalPages);
+      }
+    }
+
+    return pages;
+  };
+
+  if (totalPages <= 1) return null;
+
+  return (
+    <div className="mt-8 flex items-center justify-center gap-2">
+      {currentPage > 1 ? (
+        <Link
+          href={`/releases/${currentPage - 1}`}
+          className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+        >
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="2"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 19.5L8.25 12l7.5-7.5"
+            />
+          </svg>
+          이전
+        </Link>
+      ) : (
+        <span className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-gray-400 cursor-not-allowed">
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="2"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 19.5L8.25 12l7.5-7.5"
+            />
+          </svg>
+          이전
+        </span>
+      )}
+
+      <div className="flex items-center gap-1">
+        {renderPageNumbers().map((page, idx) =>
+          typeof page === "number" ? (
+            <Link
+              key={idx}
+              href={`/releases/${page}`}
+              className={`min-w-[40px] rounded-lg px-3 py-2 text-sm font-medium text-center transition-colors ${
+                currentPage === page
+                  ? "bg-blue-600 text-white"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`}
+            >
+              {page}
+            </Link>
+          ) : (
+            <span key={idx} className="px-2 text-gray-400">
+              {page}
+            </span>
+          )
+        )}
+      </div>
+
+      {currentPage < totalPages ? (
+        <Link
+          href={`/releases/${currentPage + 1}`}
+          className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+        >
+          다음
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="2"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M8.25 4.5l7.5 7.5-7.5 7.5"
+            />
+          </svg>
+        </Link>
+      ) : (
+        <span className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-gray-400 cursor-not-allowed">
+          다음
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="2"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M8.25 4.5l7.5 7.5-7.5 7.5"
+            />
+          </svg>
+        </span>
+      )}
+    </div>
+  );
+}
+
+export default async function ReleasesPage({
+  params,
+}: {
+  params: Promise<{ page: string }>;
+}) {
+  const { page } = await params;
+  const currentPage = parseInt(page, 10);
+  const releases = await getReleases();
+
+  const totalPages = Math.ceil(releases.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentReleases = releases.slice(startIndex, endIndex);
+
+  return (
+    <main className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+              릴리즈 노트
+            </h1>
+            <p className="mt-4 text-lg text-gray-300">
+              CrossPoint Reader 한국어 펌웨어 버전별 변경사항
+            </p>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2">
+              <span className="text-sm text-gray-300">현재 버전</span>
+              <span className="rounded-full bg-blue-500 px-3 py-1 text-sm font-semibold">
+                v{CROSSPOINT_VERSION}
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Releases List */}
+      <section className="py-12">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          {releases.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500">
+                릴리즈 정보를 불러올 수 없습니다.
+              </p>
+              <a
+                href="https://github.com/eunchurn/crosspoint-reader-ko/releases"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center text-blue-600 hover:underline"
+              >
+                GitHub에서 릴리즈 보기
+                <svg
+                  className="ml-1 h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+                  />
+                </svg>
+              </a>
+            </div>
+          ) : (
+            <>
+              <div className="space-y-8">
+                {currentReleases.map((release, index) => (
+                  <ReleaseCard
+                    key={release.id}
+                    release={release}
+                    isLatest={currentPage === 1 && index === 0}
+                  />
+                ))}
+              </div>
+
+              <Pagination currentPage={currentPage} totalPages={totalPages} />
+
+              {totalPages > 1 && (
+                <div className="mt-4 text-center text-sm text-gray-500">
+                  {releases.length}개의 릴리즈 중 {startIndex + 1}-
+                  {Math.min(endIndex, releases.length)}
+                </div>
+              )}
+            </>
+          )}
+
+          {/* Back to Home */}
+          <div className="mt-12 text-center">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                />
+              </svg>
+              홈으로 돌아가기
+            </Link>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}

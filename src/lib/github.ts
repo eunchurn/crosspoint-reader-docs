@@ -5,6 +5,64 @@ export interface Contributor {
   contributions: number;
 }
 
+export interface Release {
+  id: number;
+  tag_name: string;
+  name: string;
+  body: string;
+  html_url: string;
+  published_at: string;
+  prerelease: boolean;
+  draft: boolean;
+  assets: {
+    name: string;
+    browser_download_url: string;
+    size: number;
+    download_count: number;
+  }[];
+}
+
+export async function getReleases(): Promise<Release[]> {
+  try {
+    const response = await fetch(
+      "https://api.github.com/repos/eunchurn/crosspoint-reader-ko/releases",
+      {
+        headers: {
+          Accept: "application/vnd.github.v3+json",
+          "User-Agent": "crosspoint-reader-docs",
+        },
+        next: { revalidate: false },
+      }
+    );
+
+    if (!response.ok) {
+      console.error("Failed to fetch releases:", response.statusText);
+      return [];
+    }
+
+    const data = await response.json();
+    return data.map((release: Release) => ({
+      id: release.id,
+      tag_name: release.tag_name,
+      name: release.name,
+      body: release.body,
+      html_url: release.html_url,
+      published_at: release.published_at,
+      prerelease: release.prerelease,
+      draft: release.draft,
+      assets: release.assets.map((asset) => ({
+        name: asset.name,
+        browser_download_url: asset.browser_download_url,
+        size: asset.size,
+        download_count: asset.download_count,
+      })),
+    }));
+  } catch (error) {
+    console.error("Error fetching releases:", error);
+    return [];
+  }
+}
+
 export async function getContributors(): Promise<Contributor[]> {
   try {
     const response = await fetch(

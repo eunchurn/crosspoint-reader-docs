@@ -65,6 +65,14 @@ export default function Footer() {
                   한글 폰트 정보
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/releases"
+                  className="hover:text-blue-400 transition-colors"
+                >
+                  릴리즈 노트
+                </Link>
+              </li>
             </ul>
           </div>
 
