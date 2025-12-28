@@ -8,21 +8,25 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
-            <div className="flex items-center gap-2 mb-4">
+            <a
+              href="https://idlerecord.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 mb-4 hover:opacity-80 transition-opacity"
+            >
               <Image
-                src={getAssetPath("/icon.svg")}
-                alt="CrossPoint Reader"
+                src={getAssetPath("/idlerecord.svg")}
+                alt="IDLERECORD"
                 width={32}
                 height={32}
                 className="h-8 w-8"
               />
               <span className="font-semibold text-lg text-white">
-                CrossPoint Reader
+                IDLERECORD
               </span>
-            </div>
+            </a>
             <p className="text-sm text-gray-400">
-              Xteink X4 전자잉크 리더를 위한 오픈소스 펌웨어입니다. 한글 EPUB
-              읽기를 지원합니다.
+              당신의 여유 시간을 기록하여, 평범한 순간을 특별한 기억으로 바꿔주는 플랫폼입니다.
             </p>
           </div>
 

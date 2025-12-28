@@ -23,14 +23,14 @@ export default function Header() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2">
               <Image
-                src={getAssetPath("/icon.svg")}
+                src={getAssetPath("/logo.svg")}
                 alt="CrossPoint Reader"
                 width={32}
                 height={32}
                 className="h-8 w-8"
               />
               <span className="font-semibold text-lg text-gray-900">
-                CrossPoint Reader
+                CrossPoint Reader KO
               </span>
             </Link>
           </div>

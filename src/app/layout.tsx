@@ -70,7 +70,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: `${basePath}/icon.svg`, type: "image/svg+xml" },
+      { url: `${basePath}/logo.svg`, type: "image/svg+xml" },
       { url: `${basePath}/web-app-manifest-192x192.png`, sizes: "192x192", type: "image/png" },
       { url: `${basePath}/web-app-manifest-512x512.png`, sizes: "512x512", type: "image/png" },
     ],
