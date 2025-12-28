@@ -69,9 +69,14 @@ export interface LatestRelease {
   name: string;
   html_url: string;
   published_at: string;
-  firmware_url: string | null;
-  firmware_name: string | null;
-  firmware_size: number | null;
+  // 머지된 바이너리 (esptool용) - CrossPoint-x.x.x.bin
+  merged_firmware_url: string | null;
+  merged_firmware_name: string | null;
+  merged_firmware_size: number | null;
+  // 웹 플래시용 - firmware.bin
+  web_firmware_url: string | null;
+  web_firmware_name: string | null;
+  web_firmware_size: number | null;
 }
 
 export async function getLatestRelease(): Promise<LatestRelease | null> {
@@ -93,8 +98,16 @@ export async function getLatestRelease(): Promise<LatestRelease | null> {
     }
 
     const data = await response.json();
-    const binAsset = data.assets?.find((asset: { name: string }) =>
-      asset.name.endsWith(".bin")
+
+    // 머지된 펌웨어 (CrossPoint-*.bin) - esptool용
+    const mergedAsset = data.assets?.find(
+      (asset: { name: string }) =>
+        asset.name.startsWith("CrossPoint-") && asset.name.endsWith(".bin")
+    );
+
+    // 웹 플래시용 펌웨어 (firmware.bin)
+    const webAsset = data.assets?.find(
+      (asset: { name: string }) => asset.name === "firmware.bin"
     );
 
     return {
@@ -102,9 +115,12 @@ export async function getLatestRelease(): Promise<LatestRelease | null> {
       name: data.name,
       html_url: data.html_url,
       published_at: data.published_at,
-      firmware_url: binAsset?.browser_download_url || null,
-      firmware_name: binAsset?.name || null,
-      firmware_size: binAsset?.size || null,
+      merged_firmware_url: mergedAsset?.browser_download_url || null,
+      merged_firmware_name: mergedAsset?.name || null,
+      merged_firmware_size: mergedAsset?.size || null,
+      web_firmware_url: webAsset?.browser_download_url || null,
+      web_firmware_name: webAsset?.name || null,
+      web_firmware_size: webAsset?.size || null,
     };
   } catch (error) {
     console.error("Error fetching latest release:", error);

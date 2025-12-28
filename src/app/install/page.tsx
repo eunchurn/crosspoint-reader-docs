@@ -20,10 +20,19 @@ export default async function InstallPage() {
 
   // API에서 가져온 정보 사용, 실패 시 fallback
   const version = latestRelease?.tag_name || CROSSPOINT_VERSION;
-  const firmwareFilename =
-    latestRelease?.firmware_name || `CrossPoint-${CROSSPOINT_VERSION}.bin`;
-  const firmwareDownloadUrl =
-    latestRelease?.firmware_url ||
+
+  // 웹 플래시용 펌웨어 (firmware.bin)
+  const webFirmwareFilename = latestRelease?.web_firmware_name || "firmware.bin";
+  const webFirmwareDownloadUrl =
+    latestRelease?.web_firmware_url ||
+    `https://github.com/eunchurn/crosspoint-reader-ko/releases/download/${CROSSPOINT_VERSION}/firmware.bin`;
+
+  // esptool용 머지된 펌웨어 (CrossPoint-*.bin)
+  const mergedFirmwareFilename =
+    latestRelease?.merged_firmware_name ||
+    `CrossPoint-${CROSSPOINT_VERSION}.bin`;
+  const mergedFirmwareDownloadUrl =
+    latestRelease?.merged_firmware_url ||
     `https://github.com/eunchurn/crosspoint-reader-ko/releases/download/${CROSSPOINT_VERSION}/CrossPoint-${CROSSPOINT_VERSION}.bin`;
   return (
     <div className="min-h-screen flex flex-col">
@@ -93,13 +102,13 @@ export default async function InstallPage() {
                       <p className="text-gray-600 mt-1">
                         GitHub 릴리즈 페이지에서{" "}
                         <code className="bg-gray-200 px-2 py-1 rounded text-sm">
-                          {firmwareFilename}
+                          {webFirmwareFilename}
                         </code>{" "}
-                        파일을 다운로드합니다.
+                        파일을 다운로드합니다. (웹 플래셔 전용)
                       </p>
                       <div className="flex flex-col sm:flex-row gap-3 mt-3">
                         <a
-                          href={firmwareDownloadUrl}
+                          href={webFirmwareDownloadUrl}
                           className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
                         >
                           <svg
@@ -230,12 +239,45 @@ export default async function InstallPage() {
                 </h2>
                 <p className="text-gray-600 mb-6">
                   명령줄 도구를 사용하여 직접 펌웨어를 플래시하는 방법입니다.
+                  머지된 바이너리 파일을 사용합니다.
                 </p>
 
                 <div className="space-y-6">
                   <div>
                     <h3 className="font-semibold text-gray-900">
-                      1. esptool 설치
+                      1. 펌웨어 다운로드
+                    </h3>
+                    <p className="text-gray-600 mt-1">
+                      GitHub 릴리즈 페이지에서{" "}
+                      <code className="bg-gray-200 px-2 py-1 rounded text-sm">
+                        {mergedFirmwareFilename}
+                      </code>{" "}
+                      파일을 다운로드합니다. (esptool 전용 머지된 바이너리)
+                    </p>
+                    <a
+                      href={mergedFirmwareDownloadUrl}
+                      className="inline-flex items-center justify-center gap-2 rounded-lg bg-gray-800 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-900 transition-colors mt-3"
+                    >
+                      <svg
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="2"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                        />
+                      </svg>
+                      머지된 펌웨어 다운로드
+                    </a>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-gray-900">
+                      2. esptool 설치
                     </h3>
                     <pre className="bg-gray-900 text-gray-100 rounded-lg p-4 mt-2 overflow-x-auto">
                       <code>pip install esptool</code>
@@ -244,11 +286,12 @@ export default async function InstallPage() {
 
                   <div>
                     <h3 className="font-semibold text-gray-900">
-                      2. 펌웨어 플래시
+                      3. 펌웨어 플래시
                     </h3>
                     <pre className="bg-gray-900 text-gray-100 rounded-lg p-4 mt-2 overflow-x-auto">
                       <code>
-                        esptool.py --chip esp32c3 write_flash 0x0 {firmwareFilename}
+                        esptool.py --chip esp32c3 write_flash 0x0{" "}
+                        {mergedFirmwareFilename}
                       </code>
                     </pre>
                   </div>
