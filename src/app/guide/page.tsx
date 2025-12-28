@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import type { Metadata } from "next";
+import { getAssetPath } from "@/lib/basePath";
 
 export const metadata: Metadata = {
   title: "사용자 가이드",
@@ -42,7 +43,7 @@ export default function GuidePage() {
 
                 <div className="mb-8">
                   <Image
-                    src="/device-overview.png"
+                    src={getAssetPath("/device-overview.png")}
                     alt="Xteink X4 하드웨어 개요"
                     width={800}
                     height={600}

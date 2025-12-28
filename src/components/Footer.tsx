@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { getAssetPath } from "@/lib/basePath";
 
 export default function Footer() {
   return (
@@ -9,7 +10,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Image
-                src="/icon.svg"
+                src={getAssetPath("/icon.svg")}
                 alt="CrossPoint Reader"
                 width={32}
                 height={32}

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { getAssetPath } from "@/lib/basePath";
 
 const navigation = [
   { name: "홈", href: "/" },
@@ -22,7 +23,7 @@ export default function Header() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2">
               <Image
-                src="/icon.svg"
+                src={getAssetPath("/icon.svg")}
                 alt="CrossPoint Reader"
                 width={32}
                 height={32}

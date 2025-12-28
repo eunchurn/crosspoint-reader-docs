@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { CROSSPOINT_VERSION } from "@/constants/version";
 import { getContributors, type Contributor } from "@/lib/github";
+import { getAssetPath } from "@/lib/basePath";
 
 const features = [
   {
@@ -115,7 +116,7 @@ export default async function Home() {
 
               <div className="flex justify-center lg:justify-end">
                 <Image
-                  src="/x4-crosspoint-boot.svg"
+                  src={getAssetPath("/x4-crosspoint-boot.svg")}
                   alt="Xteink X4 CrossPoint 부팅 화면"
                   width={400}
                   height={600}
