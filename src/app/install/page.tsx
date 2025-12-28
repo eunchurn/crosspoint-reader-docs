@@ -1,11 +1,8 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
-import {
-  CROSSPOINT_VERSION,
-  getFirmwareFilename,
-  getFirmwareDownloadUrl,
-} from "@/constants/version";
+import { getLatestRelease } from "@/lib/github";
+import { CROSSPOINT_VERSION } from "@/constants/version";
 
 export const metadata: Metadata = {
   title: "설치 가이드",
@@ -18,7 +15,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function InstallPage() {
+export default async function InstallPage() {
+  const latestRelease = await getLatestRelease();
+
+  // API에서 가져온 정보 사용, 실패 시 fallback
+  const version = latestRelease?.tag_name || CROSSPOINT_VERSION;
+  const firmwareFilename =
+    latestRelease?.firmware_name || `CrossPoint-${CROSSPOINT_VERSION}.bin`;
+  const firmwareDownloadUrl =
+    latestRelease?.firmware_url ||
+    `https://github.com/eunchurn/crosspoint-reader-ko/releases/download/${CROSSPOINT_VERSION}/CrossPoint-${CROSSPOINT_VERSION}.bin`;
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -32,7 +38,7 @@ export default function InstallPage() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-blue-500"></span>
               </span>
-              현재 버전: v{CROSSPOINT_VERSION}
+              현재 버전: v{version}
             </div>
             <h1 className="text-4xl font-bold text-gray-900">설치 가이드</h1>
             <p className="mt-4 text-lg text-gray-600">
@@ -87,13 +93,13 @@ export default function InstallPage() {
                       <p className="text-gray-600 mt-1">
                         GitHub 릴리즈 페이지에서{" "}
                         <code className="bg-gray-200 px-2 py-1 rounded text-sm">
-                          {getFirmwareFilename()}
+                          {firmwareFilename}
                         </code>{" "}
                         파일을 다운로드합니다.
                       </p>
                       <div className="flex flex-col sm:flex-row gap-3 mt-3">
                         <a
-                          href={getFirmwareDownloadUrl()}
+                          href={firmwareDownloadUrl}
                           className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
                         >
                           <svg
@@ -242,7 +248,7 @@ export default function InstallPage() {
                     </h3>
                     <pre className="bg-gray-900 text-gray-100 rounded-lg p-4 mt-2 overflow-x-auto">
                       <code>
-                        esptool.py --chip esp32c3 write_flash 0x0 {getFirmwareFilename()}
+                        esptool.py --chip esp32c3 write_flash 0x0 {firmwareFilename}
                       </code>
                     </pre>
                   </div>

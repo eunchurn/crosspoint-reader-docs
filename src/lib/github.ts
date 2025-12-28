@@ -24,14 +24,15 @@ export interface Release {
 
 export async function getReleases(): Promise<Release[]> {
   try {
+    // 타임스탬프를 URL에 추가하여 캐시 방지
+    const timestamp = Date.now();
     const response = await fetch(
-      "https://api.github.com/repos/eunchurn/crosspoint-reader-ko/releases",
+      `https://api.github.com/repos/eunchurn/crosspoint-reader-ko/releases?_t=${timestamp}`,
       {
         headers: {
           Accept: "application/vnd.github.v3+json",
           "User-Agent": "crosspoint-reader-docs",
         },
-        next: { revalidate: false },
       }
     );
 
@@ -60,6 +61,54 @@ export async function getReleases(): Promise<Release[]> {
   } catch (error) {
     console.error("Error fetching releases:", error);
     return [];
+  }
+}
+
+export interface LatestRelease {
+  tag_name: string;
+  name: string;
+  html_url: string;
+  published_at: string;
+  firmware_url: string | null;
+  firmware_name: string | null;
+  firmware_size: number | null;
+}
+
+export async function getLatestRelease(): Promise<LatestRelease | null> {
+  try {
+    const timestamp = Date.now();
+    const response = await fetch(
+      `https://api.github.com/repos/eunchurn/crosspoint-reader-ko/releases/latest?_t=${timestamp}`,
+      {
+        headers: {
+          Accept: "application/vnd.github.v3+json",
+          "User-Agent": "crosspoint-reader-docs",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error("Failed to fetch latest release:", response.statusText);
+      return null;
+    }
+
+    const data = await response.json();
+    const binAsset = data.assets?.find((asset: { name: string }) =>
+      asset.name.endsWith(".bin")
+    );
+
+    return {
+      tag_name: data.tag_name,
+      name: data.name,
+      html_url: data.html_url,
+      published_at: data.published_at,
+      firmware_url: binAsset?.browser_download_url || null,
+      firmware_name: binAsset?.name || null,
+      firmware_size: binAsset?.size || null,
+    };
+  } catch (error) {
+    console.error("Error fetching latest release:", error);
+    return null;
   }
 }
 
