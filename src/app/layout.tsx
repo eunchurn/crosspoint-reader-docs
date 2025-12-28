@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { basePath } from "@/lib/basePath";
 
 const siteUrl = "https://eunchurn.github.io/crosspoint-reader-docs";
 const siteName = "CrossPoint Reader 한국어";
@@ -69,15 +70,15 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
-      { url: "/web-app-manifest-192x192.png", sizes: "192x192", type: "image/png" },
-      { url: "/web-app-manifest-512x512.png", sizes: "512x512", type: "image/png" },
+      { url: `${basePath}/icon.svg`, type: "image/svg+xml" },
+      { url: `${basePath}/web-app-manifest-192x192.png`, sizes: "192x192", type: "image/png" },
+      { url: `${basePath}/web-app-manifest-512x512.png`, sizes: "512x512", type: "image/png" },
     ],
     apple: [
-      { url: "/web-app-manifest-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: `${basePath}/web-app-manifest-192x192.png`, sizes: "192x192", type: "image/png" },
     ],
   },
-  manifest: "/manifest.json",
+  manifest: `${basePath}/manifest.json`,
   alternates: {
     canonical: siteUrl,
   },
