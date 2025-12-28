@@ -47,28 +47,43 @@ function applyInlineFormatting(text: string): string {
     return placeholder;
   });
 
-  // 2. 나머지 HTML 태그 이스케이프
+  // 2. <URL> 형식 링크 보존 (이스케이프 전에 처리)
+  const angleBracketLinks: string[] = [];
+  result = result.replace(/<(https?:\/\/[^>]+)>/g, (_, url) => {
+    const placeholder = `__ANGLE_LINK_${angleBracketLinks.length}__`;
+    angleBracketLinks.push(
+      `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline break-all">${url}</a>`
+    );
+    return placeholder;
+  });
+
+  // 3. 나머지 HTML 태그 이스케이프
   result = result.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-  // 3. 마크다운 링크
+  // 4. 마크다운 링크
   result = result.replace(
     /\[([^\]]+)\]\(([^)]+)\)/g,
     '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">$1</a>'
   );
 
-  // 4. 자동 URL 링크
+  // 5. 자동 URL 링크
   result = result.replace(
     /(?<!["\(=])https?:\/\/[^\s&]+/g,
     '<a href="$&" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline break-all">$&</a>'
   );
 
-  // 5. Bold/Italic
+  // 6. Bold/Italic
   result = result.replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
   result = result.replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, "<em>$1</em>");
 
-  // 6. 인라인 코드 복원
+  // 7. 인라인 코드 복원
   codeSegments.forEach((html, i) => {
     result = result.replace(`__INLINE_CODE_${i}__`, html);
+  });
+
+  // 8. <URL> 링크 복원
+  angleBracketLinks.forEach((html, i) => {
+    result = result.replace(`__ANGLE_LINK_${i}__`, html);
   });
 
   return result;
@@ -99,7 +114,7 @@ function parseMarkdown(text: string): string {
     }
 
     codeBlocks.push(
-      `<pre class="bg-gray-50 p-4 rounded-lg overflow-x-auto text-sm my-4"><code class="hljs language-${language}">${highlightedCode}</code></pre>`
+      `<pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm my-4"><code class="hljs language-${language}">${highlightedCode}</code></pre>`
     );
     return placeholder;
   });
@@ -120,6 +135,18 @@ function parseMarkdown(text: string): string {
       continue;
     }
 
+    if (processed.match(/^#### /)) {
+      if (inList) {
+        processedLines.push("</ul>");
+        inList = false;
+      }
+      processed = processed.replace(
+        /^#### (.+)$/,
+        '<h4 class="text-base font-semibold mt-4 mb-2 text-gray-800">$1</h4>'
+      );
+      processedLines.push(processed);
+      continue;
+    }
     if (processed.match(/^### /)) {
       if (inList) {
         processedLines.push("</ul>");
@@ -182,6 +209,33 @@ function parseMarkdown(text: string): string {
   codeBlocks.forEach((block, i) => {
     result = result.replace(`<!--CODE_BLOCK_${i}-->`, block);
   });
+
+  // GitHub 스타일 인용 블록 처리 (> [!TIP], > [!NOTE], > [!WARNING], > [!IMPORTANT])
+  result = result.replace(
+    /<div class="my-2">&gt; \[!TIP\]<\/div>\n<div class="my-2">&gt; (.+?)<\/div>/g,
+    '<div class="my-4 p-4 bg-green-50 border-l-4 border-green-500 rounded-r-lg"><div class="flex items-center gap-2 text-green-700 font-semibold mb-1"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>TIP</div><div class="text-green-800">$1</div></div>'
+  );
+
+  result = result.replace(
+    /<div class="my-2">&gt; \[!NOTE\]<\/div>\n<div class="my-2">&gt; (.+?)<\/div>/g,
+    '<div class="my-4 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg"><div class="flex items-center gap-2 text-blue-700 font-semibold mb-1"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>NOTE</div><div class="text-blue-800">$1</div></div>'
+  );
+
+  result = result.replace(
+    /<div class="my-2">&gt; \[!WARNING\]<\/div>\n<div class="my-2">&gt; (.+?)<\/div>/g,
+    '<div class="my-4 p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-r-lg"><div class="flex items-center gap-2 text-yellow-700 font-semibold mb-1"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>WARNING</div><div class="text-yellow-800">$1</div></div>'
+  );
+
+  result = result.replace(
+    /<div class="my-2">&gt; \[!IMPORTANT\]<\/div>\n<div class="my-2">&gt; (.+?)<\/div>/g,
+    '<div class="my-4 p-4 bg-purple-50 border-l-4 border-purple-500 rounded-r-lg"><div class="flex items-center gap-2 text-purple-700 font-semibold mb-1"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>IMPORTANT</div><div class="text-purple-800">$1</div></div>'
+  );
+
+  // 일반 인용 블록 (> 로 시작하는 줄)
+  result = result.replace(
+    /<div class="my-2">&gt; (.+?)<\/div>/g,
+    '<blockquote class="my-2 pl-4 border-l-4 border-gray-300 text-gray-600 italic">$1</blockquote>'
+  );
 
   return result;
 }
@@ -275,7 +329,7 @@ function ReleaseCard({
 
       {release.body && (
         <div
-          className="mt-6 prose prose-sm max-w-none text-gray-600 [&_pre]:bg-gray-50 [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:text-sm [&_pre_code]:bg-transparent [&_pre_code]:p-0"
+          className="mt-6 prose prose-sm max-w-none text-gray-600 [&_pre]:bg-gray-900 [&_pre]:text-gray-100 [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:text-sm [&_pre_code]:bg-transparent [&_pre_code]:p-0"
           dangerouslySetInnerHTML={{
             __html: parseMarkdown(release.body),
           }}
