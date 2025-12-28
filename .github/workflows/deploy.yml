@@ -25,6 +25,12 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Update submodule to latest
+      run: |
+        git submodule update --remote --merge
+        echo "Submodule updated to:"
+        git -C crosspoint-reader-ko log -1 --format="%h %s"
+
     - name: Setup Bun
       uses: oven-sh/setup-bun@v2
       with:
