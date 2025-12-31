@@ -28,8 +28,8 @@ jobs:
     - name: Update submodule to latest
       run: |
         cd crosspoint-reader-ko
-        git fetch origin
-        git checkout origin/release/korean
+        git fetch origin release/korean
+        git checkout FETCH_HEAD
         echo "Submodule updated to:"
         git log -1 --format="%h %s"
 
