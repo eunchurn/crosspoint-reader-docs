@@ -25,9 +25,9 @@ jobs:
 
     - name: Checkout submodule (release/korean latest)
       run: |
+        git config --global url."https://github.com/".insteadOf "git@github.com:"
         git submodule update --init
         cd crosspoint-reader-ko
-        git remote set-url origin https://github.com/eunchurn/crosspoint-reader-ko.git
         git fetch origin release/korean --depth=1
         git checkout FETCH_HEAD
         echo "Submodule updated to:"
