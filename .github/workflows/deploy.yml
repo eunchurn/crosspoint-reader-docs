@@ -22,11 +22,16 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-      with:
-        submodules: true
 
-    - name: Update submodule to latest release/korean
-      run: git -C crosspoint-reader-ko fetch origin release/korean --depth=1 && git -C crosspoint-reader-ko checkout FETCH_HEAD
+    - name: Checkout submodule (release/korean latest)
+      run: |
+        git submodule update --init
+        cd crosspoint-reader-ko
+        git remote set-url origin https://github.com/eunchurn/crosspoint-reader-ko.git
+        git fetch origin release/korean --depth=1
+        git checkout FETCH_HEAD
+        echo "Submodule updated to:"
+        git log -1 --format="%h %s"
 
     - name: Setup Bun
       uses: oven-sh/setup-bun@v2
