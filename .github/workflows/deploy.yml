@@ -27,11 +27,9 @@ jobs:
 
     - name: Update submodule to latest
       run: |
-        cd crosspoint-reader-ko
-        git fetch origin release/korean
-        git checkout FETCH_HEAD
+        git submodule update --remote --merge
         echo "Submodule updated to:"
-        git log -1 --format="%h %s"
+        cd crosspoint-reader-ko && git log -1 --format="%h %s"
 
     - name: Setup Bun
       uses: oven-sh/setup-bun@v2
