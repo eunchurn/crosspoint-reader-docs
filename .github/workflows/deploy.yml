@@ -23,13 +23,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        submodules: recursive
+        submodules: true
 
-    - name: Update submodule to latest
-      run: |
-        git submodule update --remote --merge
-        echo "Submodule updated to:"
-        cd crosspoint-reader-ko && git log -1 --format="%h %s"
+    - name: Update submodule to latest release/korean
+      run: git -C crosspoint-reader-ko fetch origin release/korean --depth=1 && git -C crosspoint-reader-ko checkout FETCH_HEAD
 
     - name: Setup Bun
       uses: oven-sh/setup-bun@v2
