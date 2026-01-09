@@ -19,9 +19,9 @@ const navigation: NavItem[] = [
     children: [
       { name: "기본 사용", href: "/guide" },
       { name: "파일 전송", href: "/webserver" },
+      { name: "한글 폰트", href: "/korean-font" },
     ],
   },
-  { name: "한글 폰트", href: "/korean-font" },
   { name: "릴리즈", href: "/releases" },
 ];
 
