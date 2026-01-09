@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "bun run scripts/update-version.ts",
+    "prebuild": "bun run scripts/update-version.ts && bun run scripts/download-firmware.ts",
     "build": "next build",
     "start": "serve out",
     "lint": "next lint"
   },
   "dependencies": {
+    "crc": "^4.3.2",
+    "esptool-js": "^0.5.7",
     "highlight.js": "^11.11.1",
     "next": "^16.1.1",
     "react": "^19.2.3",
@@ -19,6 +21,7 @@
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4.1.18",
     "@tailwindcss/typography": "^0.5.19",
+    "@types/dom-serial": "^1.0.6",
     "@types/node": "^25",
     "@types/react": "^19",
     "@types/react-dom": "^19",
