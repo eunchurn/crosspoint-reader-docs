@@ -140,11 +140,11 @@ function parseMarkdown(text: string): string {
         processedLines.push("</ul>");
         inList = false;
       }
-      processed = processed.replace(
-        /^#### (.+)$/,
-        '<h4 class="text-base font-semibold mt-4 mb-2 text-gray-800">$1</h4>'
+      const headingContent = processed.replace(/^#### (.+)$/, "$1");
+      const formattedHeading = applyInlineFormatting(headingContent);
+      processedLines.push(
+        `<h4 class="text-base font-semibold mt-4 mb-2 text-gray-800">${formattedHeading}</h4>`
       );
-      processedLines.push(processed);
       continue;
     }
     if (processed.match(/^### /)) {
@@ -152,11 +152,11 @@ function parseMarkdown(text: string): string {
         processedLines.push("</ul>");
         inList = false;
       }
-      processed = processed.replace(
-        /^### (.+)$/,
-        '<h3 class="text-lg font-semibold mt-4 mb-2">$1</h3>'
+      const headingContent = processed.replace(/^### (.+)$/, "$1");
+      const formattedHeading = applyInlineFormatting(headingContent);
+      processedLines.push(
+        `<h3 class="text-lg font-semibold mt-4 mb-2">${formattedHeading}</h3>`
       );
-      processedLines.push(processed);
       continue;
     }
     if (processed.match(/^## /)) {
@@ -164,11 +164,11 @@ function parseMarkdown(text: string): string {
         processedLines.push("</ul>");
         inList = false;
       }
-      processed = processed.replace(
-        /^## (.+)$/,
-        '<h2 class="text-xl font-bold mt-6 mb-3">$1</h2>'
+      const headingContent = processed.replace(/^## (.+)$/, "$1");
+      const formattedHeading = applyInlineFormatting(headingContent);
+      processedLines.push(
+        `<h2 class="text-xl font-bold mt-6 mb-3">${formattedHeading}</h2>`
       );
-      processedLines.push(processed);
       continue;
     }
 
@@ -554,6 +554,27 @@ export default async function ReleasesPage({
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+            >
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                />
+              </svg>
+              홈으로 돌아가기
+            </Link>
+          </div>
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
               릴리즈 노트
