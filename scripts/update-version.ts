@@ -8,11 +8,12 @@ const VERSION_TS_PATH = join(ROOT_DIR, "src", "constants", "version.ts");
 function extractVersion(): string {
   try {
     const content = readFileSync(PLATFORMIO_PATH, "utf-8");
-    const match = content.match(/crosspoint_version\s*=\s*(.+)/);
+    // [crosspoint] 섹션의 version 키에서 버전 추출
+    const match = content.match(/\[crosspoint\]\s*\n\s*version\s*=\s*(.+)/);
     if (match && match[1]) {
       return match[1].trim();
     }
-    throw new Error("Version not found in platformio.ini");
+    throw new Error("Version not found in platformio.ini [crosspoint] section");
   } catch (error) {
     console.error("Error reading platformio.ini:", error);
     process.exit(1);
