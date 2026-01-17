@@ -225,7 +225,7 @@ export default function FlasherPage() {
                 disabled={isRunning}
                 className="w-full px-4 py-3 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                중국어 공식 펌웨어 플래싱 (3.1.5)
+                중국어 공식 펌웨어 플래싱 (3.1.7)
               </button>
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex-1">
