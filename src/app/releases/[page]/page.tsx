@@ -13,7 +13,7 @@ const ITEMS_PER_PAGE = 3;
 // 빌드 타임에 모든 페이지 생성
 export async function generateStaticParams() {
   const releases = await getReleases();
-  const totalPages = Math.ceil(releases.length / ITEMS_PER_PAGE);
+  const totalPages = Math.max(1, Math.ceil(releases.length / ITEMS_PER_PAGE));
 
   return Array.from({ length: totalPages }, (_, i) => ({
     page: String(i + 1),

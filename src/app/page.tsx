@@ -548,31 +548,6 @@ export default async function Home() {
                 </span>
               </a>
 
-              {/* XTEink Font Maker */}
-              <a
-                href="https://xteink.lakafior.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-lg hover:border-cyan-300 transition-all"
-              >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-100 text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white transition-colors">
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" />
-                  </svg>
-                </div>
-                <h3 className="mt-4 text-lg font-semibold text-gray-900 group-hover:text-cyan-600">
-                  XTEink Font Maker
-                </h3>
-                <p className="mt-2 text-sm text-gray-500">
-                  커스텀 폰트를 X4용 .bin 파일로 변환합니다.
-                </p>
-                <span className="mt-3 inline-flex items-center text-sm text-cyan-600">
-                  xteink.lakafior.com
-                  <svg className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                  </svg>
-                </span>
-              </a>
             </div>
           </div>
         </section>

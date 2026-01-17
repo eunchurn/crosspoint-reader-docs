@@ -14,6 +14,7 @@ interface NavItem {
 const navigation: NavItem[] = [
   { name: "설치 가이드", href: "/install" },
   { name: "웹 플래셔", href: "/flasher" },
+  { name: "폰트 변환", href: "/font-converter" },
   {
     name: "사용자 가이드",
     children: [

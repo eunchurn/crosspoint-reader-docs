@@ -332,47 +332,66 @@ export default function KoreanFontPage() {
               {/* Font Conversion */}
               <div className="rounded-2xl border border-gray-200 bg-white p-8 mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                  폰트 변환 방법
+                  커스텀 폰트 변환
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  TTF 폰트를 헤더 파일로 변환하려면 다음 명령을 사용합니다:
+                  TTF/OTF 폰트를 CrossPoint Reader에서 사용할 수 있는{" "}
+                  <code className="bg-gray-100 px-1 rounded">.epdfont</code>{" "}
+                  형식으로 변환할 수 있습니다.
                 </p>
-                <pre className="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto mb-6">
-                  <code>
-                    python lib/EpdFont/scripts/fontconvert.py &lt;name&gt;
-                    &lt;size&gt; &lt;ttf_file&gt; --2bit &gt; output.h
-                  </code>
-                </pre>
 
-                <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                  을유폰트 변환 예시
-                </h3>
-                <pre className="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-xs mb-4">
-                  <code>
-                    {`# Regular
-python lib/EpdFont/scripts/fontconvert.py eulyoo_2b 14 \\
-  fonts/Eulyoo1945-Regular.ttf --2bit \\
-  --additional-intervals 0xAC00,0xD7AF \\
-  --additional-intervals 0x3130,0x318F \\
-  --additional-intervals 0x4E00,0x9FFF \\
-  --additional-intervals 0x3000,0x303F \\
-  2>/dev/null > lib/EpdFont/builtinFonts/eulyoo_2b.h`}
-                  </code>
-                </pre>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
+                  <h3 className="text-lg font-semibold text-blue-800 mb-2">
+                    웹 폰트 변환기
+                  </h3>
+                  <p className="text-blue-700 mb-4">
+                    브라우저에서 바로 폰트를 변환할 수 있습니다. 다양한 유니코드 범위를 선택하고 실시간 미리보기를 확인하세요.
+                  </p>
+                  <a
+                    href="/font-converter"
+                    className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    </svg>
+                    폰트 변환기 열기
+                  </a>
+                </div>
 
-                <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                  의존성
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                  변환된 폰트 사용 방법
                 </h3>
-                <ul className="list-disc list-inside text-gray-600 space-y-1">
-                  <li>Python 3</li>
+                <ol className="list-decimal list-inside text-gray-600 space-y-2 mb-6">
                   <li>
-                    freetype-py (
-                    <code className="bg-gray-100 px-1 rounded">
-                      pip install freetype-py
-                    </code>
-                    )
+                    <a href="/font-converter" className="text-blue-600 hover:underline">폰트 변환기</a>에서 TTF/OTF 파일을 업로드합니다.
                   </li>
-                </ul>
+                  <li>원하는 유니코드 범위(한국어, 중국어, 일본어 등)를 선택합니다.</li>
+                  <li>폰트 크기와 비트 깊이를 설정하고 변환합니다.</li>
+                  <li>
+                    변환된 <code className="bg-gray-100 px-1 rounded">.epdfont</code> 파일을 SD 카드의{" "}
+                    <code className="bg-gray-100 px-1 rounded">/.crosspoint/fonts/</code> 폴더에 복사합니다.
+                  </li>
+                  <li>기기의 설정 &gt; 글꼴 설정에서 폰트를 선택합니다.</li>
+                </ol>
+
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                  <h4 className="text-sm font-semibold text-yellow-800 mb-2">
+                    지원되는 폰트 형식 및 제한 사항
+                  </h4>
+                  <div className="text-sm text-yellow-700 space-y-2">
+                    <p><strong>지원 형식:</strong> TTF, OTF, WOFF, WOFF2 (최대 10MB)</p>
+                    <p><strong>지원되지 않는 폰트:</strong></p>
+                    <ul className="list-disc list-inside ml-4 space-y-1">
+                      <li><strong>가변 폰트 (Variable Fonts)</strong> - 현재 FreeType WASM에서 가변 폰트 인터페이스가 구현되지 않았습니다.</li>
+                      <li><strong>컬러 폰트 (Color Fonts/Emoji)</strong> - 컬러 레이어 폰트는 흑백으로만 렌더링됩니다.</li>
+                      <li><strong>비트맵 전용 폰트</strong> - 스케일러블 아웃라인이 없는 순수 비트맵 폰트는 변환되지 않습니다.</li>
+                      <li><strong>복잡한 폰트</strong> - 글리프 수가 매우 많거나 복잡한 폰트는 메모리 오류가 발생할 수 있습니다.</li>
+                    </ul>
+                    <p className="mt-2 text-yellow-600">
+                      일반적인 한글 폰트(나눔고딕, 맑은 고딕, 본고딕 등)는 대부분 정상적으로 변환됩니다.
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {/* License */}

@@ -514,17 +514,15 @@ export default function GuidePage() {
                     </h4>
                     <ol className="list-decimal list-inside text-gray-600 space-y-1 mb-4">
                       <li>
-                        <a
-                          href="https://xteink.lakafior.com/"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <code className="bg-gray-100 px-1 rounded">.epdfont</code>{" "}
+                        확장자의 폰트 파일을 준비합니다. (
+                        <Link
+                          href="/font-converter"
                           className="text-blue-600 hover:text-blue-800"
                         >
-                          XTEink-Web-Font-Maker
-                        </a>
-                        를 사용하여{" "}
-                        <code className="bg-gray-100 px-1 rounded">.bin</code>{" "}
-                        폰트 파일을 생성합니다.
+                          폰트 변환기
+                        </Link>
+                        를 사용하여 TTF/OTF 폰트를 변환할 수 있습니다.)
                       </li>
                       <li>
                         SD 카드의{" "}
@@ -564,6 +562,21 @@ export default function GuidePage() {
                         <strong>참고:</strong> 기본 폰트는{" "}
                         <strong>을유1945</strong>로, 한국어 읽기에 최적화되어
                         있습니다.
+                      </p>
+                    </div>
+
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
+                      <p className="text-yellow-800 text-sm">
+                        <strong>지원 제한:</strong> 가변 폰트(Variable Fonts),
+                        컬러 폰트(Emoji), 비트맵 전용 폰트는 지원되지 않습니다.
+                        자세한 내용은{" "}
+                        <Link
+                          href="/korean-font"
+                          className="text-yellow-700 underline hover:text-yellow-900"
+                        >
+                          한글 폰트
+                        </Link>{" "}
+                        페이지를 참조하세요.
                       </p>
                     </div>
                   </div>
@@ -688,8 +701,8 @@ export default function GuidePage() {
                 </h3>
                 <ul className="list-disc list-inside text-gray-600 space-y-2">
                   <li>
-                    <strong>책 선택으로 돌아가기:</strong> 뒤로 버튼을 눌러 책을
-                    닫고 책 선택 화면으로 이동
+                    <strong>파일 탐색기로 돌아가기:</strong> 뒤로 버튼을 눌러 책을
+                    닫고 파일 탐색기 화면으로 이동
                   </li>
                   <li>
                     <strong>홈으로 돌아가기:</strong> 뒤로 버튼을{" "}
