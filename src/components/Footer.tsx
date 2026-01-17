@@ -149,6 +149,16 @@ export default function Footer() {
                   X4 Wallpaper Converter
                 </a>
               </li>
+              <li>
+                <a
+                  href="https://xteink.lakafior.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-blue-400 transition-colors"
+                >
+                  XTEink Font Maker
+                </a>
+              </li>
             </ul>
           </div>
 

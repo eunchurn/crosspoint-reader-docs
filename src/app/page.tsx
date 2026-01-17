@@ -10,7 +10,7 @@ import { getAssetPath } from "@/lib/basePath";
 const features = [
   {
     title: "다양한 파일 포맷 지원",
-    description: "EPUB, XTC, XTCH 형식의 전자책을 지원하며 e-ink 디스플레이에 최적화된 렌더링을 제공합니다.",
+    description: "EPUB, TXT, XTC, XTCH 형식의 전자책을 지원하며 e-ink 디스플레이에 최적화된 렌더링을 제공합니다.",
     icon: (
       <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
@@ -18,17 +18,17 @@ const features = [
     ),
   },
   {
-    title: "한글 완벽 지원",
-    description: "을유1945 폰트를 적용하여 한글 음절, 한자, 특수문자를 모두 지원합니다.",
+    title: "커스텀 폰트 지원",
+    description: "사용자 정의 폰트를 추가할 수 있으며, 기본 을유1945 폰트로 한글, 한자, 특수문자를 완벽 지원합니다.",
     icon: (
       <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" />
       </svg>
     ),
   },
   {
     title: "WiFi 파일 업로드",
-    description: "내장 웹 서버를 통해 무선으로 EPUB 파일을 업로드하고 관리할 수 있습니다.",
+    description: "내장 웹 서버를 통해 무선으로 전자책 파일을 업로드하고 관리할 수 있습니다.",
     icon: (
       <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M8.288 15.038a5.25 5.25 0 017.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 011.06 0z" />
@@ -36,26 +36,27 @@ const features = [
     ),
   },
   {
-    title: "읽기 위치 저장",
-    description: "마지막으로 읽은 위치를 자동으로 저장하여 언제든지 이어서 읽을 수 있습니다.",
+    title: "Calibre 연동",
+    description: "Calibre Web 서버와 통합하여 라이브러리에서 직접 책을 다운로드할 수 있습니다.",
     icon: (
       <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
       </svg>
     ),
   },
   {
-    title: "폴더 탐색기",
-    description: "중첩된 폴더 구조를 지원하는 파일 탐색기로 책을 쉽게 관리할 수 있습니다.",
+    title: "다양한 읽기 설정",
+    description: "줄 간격, 화면 여백, 문단 정렬, 텍스트 안티앨리어싱 등 세밀한 읽기 환경을 설정할 수 있습니다.",
     icon: (
       <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
       </svg>
     ),
   },
   {
     title: "커스텀 슬립 화면",
-    description: "EPUB 파일은 표지 이미지를, XTC/XTCH 파일은 첫 페이지를 슬립 화면으로 자동 적용합니다.",
+    description: "표지 이미지, 사용자 정의 이미지 또는 무작위 이미지를 절전 화면으로 설정할 수 있습니다.",
     icon: (
       <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
@@ -174,7 +175,7 @@ export default async function Home() {
                 </div>
                 <h3 className="mt-6 text-xl font-semibold text-white">USB 연결</h3>
                 <p className="mt-2 text-gray-400">
-                  Xteink X4를 USB-C 케이블로 컴퓨터에 연결합니다.
+                  X4를 USB-C 케이블로 연결합니다.
                 </p>
               </div>
 
@@ -182,9 +183,9 @@ export default async function Home() {
                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-600 text-white text-2xl font-bold">
                   2
                 </div>
-                <h3 className="mt-6 text-xl font-semibold text-white">펌웨어 다운로드</h3>
+                <h3 className="mt-6 text-xl font-semibold text-white">웹 플래셔 실행</h3>
                 <p className="mt-2 text-gray-400">
-                  GitHub에서 최신 한국어 펌웨어 파일을 다운로드합니다.
+                  웹플래셔에서 장치를 연결하고 펌웨어를 선택합니다.
                 </p>
               </div>
 
@@ -192,14 +193,23 @@ export default async function Home() {
                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-600 text-white text-2xl font-bold">
                   3
                 </div>
-                <h3 className="mt-6 text-xl font-semibold text-white">웹 플래셔로 설치</h3>
+                <h3 className="mt-6 text-xl font-semibold text-white">플래시 완료</h3>
                 <p className="mt-2 text-gray-400">
-                  xteink.dve.al에서 OTA 플래시로 펌웨어를 설치합니다.
+                  완료 후 Reset 버튼을 누르고 전원 버튼을 1초 이상 눌러 부팅합니다.
                 </p>
               </div>
             </div>
 
-            <div className="mt-12 text-center">
+            <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="/flasher"
+                className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-8 py-3 text-base font-semibold text-white hover:bg-blue-700 transition-colors"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                </svg>
+                웹 플래셔 실행
+              </Link>
               <Link
                 href="/install"
                 className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-3 text-base font-semibold text-gray-900 hover:bg-gray-100 transition-colors"
@@ -532,6 +542,32 @@ export default async function Home() {
                 </p>
                 <span className="mt-3 inline-flex items-center text-sm text-pink-600">
                   wallpaperconverter.jakegreen.dev
+                  <svg className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                  </svg>
+                </span>
+              </a>
+
+              {/* XTEink Font Maker */}
+              <a
+                href="https://xteink.lakafior.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-lg hover:border-cyan-300 transition-all"
+              >
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-100 text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white transition-colors">
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" />
+                  </svg>
+                </div>
+                <h3 className="mt-4 text-lg font-semibold text-gray-900 group-hover:text-cyan-600">
+                  XTEink Font Maker
+                </h3>
+                <p className="mt-2 text-sm text-gray-500">
+                  커스텀 폰트를 X4용 .bin 파일로 변환합니다.
+                </p>
+                <span className="mt-3 inline-flex items-center text-sm text-cyan-600">
+                  xteink.lakafior.com
                   <svg className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
                   </svg>
