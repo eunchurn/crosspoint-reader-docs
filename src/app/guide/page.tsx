@@ -81,12 +81,16 @@ export default function GuidePage() {
                           <strong>우측면</strong>
                         </td>
                         <td className="px-4 py-3 text-sm text-gray-700">
-                          전원, 이전, 다음
+                          전원, 볼륨 업, 볼륨 다운, 리셋
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
+                <p className="text-gray-600 mt-4 text-sm">
+                  버튼 배치는 <strong>설정</strong>에서 커스터마이징할 수
+                  있습니다.
+                </p>
               </div>
 
               {/* Power */}
@@ -102,9 +106,13 @@ export default function GuidePage() {
                   기기를 켜거나 끄려면 <strong>전원 버튼을 0.5초 이상</strong>{" "}
                   누르세요.
                 </p>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-600 mb-4">
                   <strong>설정</strong>에서 짧은 클릭으로 전원 버튼이 작동하도록
                   변경할 수 있습니다.
+                </p>
+                <p className="text-gray-600 mb-6">
+                  기기를 재부팅하려면 (예: 펌웨어 업데이트 후 또는 기기가 멈춘
+                  경우) 리셋 버튼을 눌렀다 떼고, 전원 버튼을 몇 초간 누르세요.
                 </p>
 
                 <h3 className="text-xl font-semibold text-gray-800 mb-4">
@@ -188,16 +196,69 @@ export default function GuidePage() {
                     </p>
                     <ul className="list-disc list-inside text-gray-600 space-y-1">
                       <li>
-                        <strong>슬립 화면:</strong> Dark, Light, Custom, Cover
+                        <strong>절전 화면 이미지:</strong> 다크(기본값), 라이트,
+                        사용자 정의, 커버, 없음 중 선택
+                      </li>
+                      <li>
+                        <strong>절전 화면 커버 모드:</strong> 자르기, 맞춤 중 선택
+                      </li>
+                      <li>
+                        <strong>상태 표시줄:</strong> 없음, 진행 없음, 전체 중
+                        선택
+                      </li>
+                      <li>
+                        <strong>배터리 % 숨기기:</strong> 안 함, 리더에서, 항상 중
+                        선택
+                      </li>
+                      <li>
+                        <strong>문단 간격 추가:</strong> 켜면 단락 사이에 공백
+                        추가, 끄면 첫 줄 들여쓰기
+                      </li>
+                      <li>
+                        <strong>텍스트 안티엘리어싱:</strong> ON/OFF 선택
+                      </li>
+                      <li>
+                        <strong>전원 버튼 짧게 누르기:</strong> 무시, 절전, 페이지 넘기기 선택
+                      </li>
+                      <li>
+                        <strong>읽기 방향:</strong> 세로 (기본값), 가로 시계방향, 반전, 가로 반시계방향 중 선택
+                      </li>
+                      <li>
+                        <strong>앞면 버튼 레이아웃:</strong> 세 가지 배치 옵션
                         중 선택
                       </li>
                       <li>
-                        <strong>단락 간격 추가:</strong> 켜면 단락 사이에 공백
-                        추가
+                        <strong>측면 버튼 레이아웃:</strong> 볼륨 버튼의
+                        이전/다음 순서 변경 (읽기 시에만 적용)
                       </li>
                       <li>
-                        <strong>전원 버튼 짧게 클릭:</strong> 짧은 클릭으로 전원
-                        켜기/끄기
+                        <strong>길게 누르면 챕터 건너뛰기:</strong> ON/OFF 선택
+                      </li>
+                      <li>
+                        <strong>줄 간격:</strong> 좁게, 보통, 넓게 중 선택
+                      </li>
+                      <li>
+                        <strong>화면 여백:</strong> 5, 10, 15,...,40 중 선택
+                      </li>
+                      <li>
+                        <strong>문단 정렬:</strong> 양쪽 정렬(기본값), 왼쪽,
+                        가운데, 오른쪽 중 선택
+                      </li>
+                      <li>
+                        <strong>절전 시간:</strong> 비활성 상태 후 자동 슬립까지
+                        시간 설정
+                      </li>
+                      <li>
+                        <strong>새로고침 주기:</strong> 고스팅 감소를 위한 전체
+                        새로고침 주기 설정
+                      </li>
+                      <li>
+                        <strong>Calibre 설정:</strong> Calibre Web 서버와의 통합
+                        설정
+                      </li>
+                      <li>
+                        <strong>업데이트 확인:</strong> WiFi를 통해 펌웨어
+                        업데이트 확인
                       </li>
                     </ul>
                   </div>
@@ -224,6 +285,13 @@ export default function GuidePage() {
                         폴더를 만들고 .bmp 이미지 배치
                       </li>
                     </ul>
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
+                      <p className="text-yellow-800 text-sm">
+                        <strong>참고:</strong> 이 이미지를 사용하려면{" "}
+                        <strong>설정</strong>에서 <strong>슬립 화면</strong>을{" "}
+                        <strong>Custom</strong>으로 설정해야 합니다.
+                      </p>
+                    </div>
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
                       <p className="text-blue-800 text-sm">
                         <strong>팁:</strong> 최상의 결과를 위해 24비트 색상의
@@ -279,8 +347,12 @@ export default function GuidePage() {
                     </tbody>
                   </table>
                 </div>
+                <p className="text-gray-600 text-sm mt-2">
+                  측면 (볼륨) 버튼의 역할은 <strong>설정</strong>에서 바꿀 수
+                  있습니다.
+                </p>
 
-                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4 mt-6">
                   챕터 탐색
                 </h3>
                 <ul className="list-disc list-inside text-gray-600 space-y-2 mb-6">
@@ -299,8 +371,12 @@ export default function GuidePage() {
                 </h3>
                 <ul className="list-disc list-inside text-gray-600 space-y-2">
                   <li>
-                    <strong>홈으로 돌아가기:</strong> 뒤로 버튼을 눌러 책을 닫고
-                    책 선택 화면으로 이동
+                    <strong>책 선택으로 돌아가기:</strong> 뒤로 버튼을 눌러 책을
+                    닫고 책 선택 화면으로 이동
+                  </li>
+                  <li>
+                    <strong>홈으로 돌아가기:</strong> 뒤로 버튼을{" "}
+                    <strong>길게 눌러</strong> 책을 닫고 홈 화면으로 이동
                   </li>
                   <li>
                     <strong>챕터 메뉴:</strong> 확인 버튼을 눌러 목차/챕터 선택
@@ -341,7 +417,7 @@ export default function GuidePage() {
                 </h2>
 
                 <p className="text-gray-600 mb-4">
-                  이 펌웨어는 현재 활발히 개발 중입니다. 다음 기능들은{" "}
+                  이 펌웨어는 현재 활발히 개발 중입니다. 다음 기능은{" "}
                   <strong>아직 지원되지 않지만</strong> 향후 업데이트에서 추가될
                   예정입니다:
                 </p>
@@ -352,12 +428,8 @@ export default function GuidePage() {
                     렌더링되지 않습니다
                   </li>
                   <li>
-                    <strong>텍스트 포맷팅:</strong> 폰트 종류, 크기, 줄 간격,
-                    여백 조정 설정이 없습니다
-                  </li>
-                  <li>
-                    <strong>회전:</strong> 다양한 화면 회전 옵션을 지원하지
-                    않습니다
+                    <strong>커스텀 한글 폰트:</strong> 현재 기본 제공 폰트만
+                    지원되며, 사용자 정의 한글 폰트 추가 기능은 개발 중입니다
                   </li>
                 </ul>
               </div>

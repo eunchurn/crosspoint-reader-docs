@@ -15,11 +15,37 @@ export default function FlasherPage() {
   const { actions, stepData, isRunning } = useEspOperations();
   const fullFlashFileInput = useRef<FileUploadHandle>(null);
   const appPartitionFileInput = useRef<FileUploadHandle>(null);
+  const progressSectionRef = useRef<HTMLElement>(null);
   const [versions, setVersions] = useState<FirmwareVersions | null>(null);
 
   useEffect(() => {
     getFirmwareVersions().then(setVersions);
   }, []);
+
+  const isDeviceConnected = stepData.some(
+    (step) => step.name === "장치 연결" && step.status === "success",
+  );
+  const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    if (isDeviceConnected && !hasScrolled && progressSectionRef.current) {
+      const element = progressSectionRef.current;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - 200;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+      setHasScrolled(true);
+    }
+  }, [isDeviceConnected, hasScrolled]);
+
+  useEffect(() => {
+    if (!isRunning) {
+      setHasScrolled(false);
+    }
+  }, [isRunning]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -224,7 +250,10 @@ export default function FlasherPage() {
           </section>
 
           {/* Steps Progress */}
-          <section className="mb-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <section
+            ref={progressSectionRef}
+            className="mb-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+          >
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
               진행 상황
             </h2>
@@ -279,7 +308,7 @@ export default function FlasherPage() {
                 <div className="mt-2 text-sm text-blue-700">
                   <p>
                     쓰기 작업을 완료한 후에는 오른쪽 하단 근처의 작은 버튼을
-                    눌렀다 떼고, 바로 메인 전원 버튼을 약 3초간 길게 눌러 장치를
+                    눌렀다 떼고, 바로 메인 전원 버튼을 약 1초간 길게 눌러 장치를
                     재시작해야 합니다.
                   </p>
                 </div>
