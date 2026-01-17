@@ -11,7 +11,7 @@ function LoadingSpinner() {
     <div className="flex min-h-screen items-center justify-center">
       <div className="text-center">
         <div className="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-        <p className="text-gray-600 dark:text-gray-400">Loading converter...</p>
+        <p className="text-gray-600 dark:text-gray-400">폰트 변환기 로드 중...</p>
       </div>
     </div>
   );

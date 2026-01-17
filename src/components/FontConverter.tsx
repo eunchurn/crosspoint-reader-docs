@@ -1707,7 +1707,7 @@ export default function FontConverter() {
               <div className="flex items-center gap-3">
                 <div className="animate-spin h-5 w-5 border-2 border-blue-500 border-t-transparent rounded-full"></div>
                 <span className="text-blue-700 dark:text-blue-300">
-                  Loading FreeType WASM library...
+                  FreeType 라이브러리 로드 중...
                 </span>
               </div>
             </div>
@@ -1736,7 +1736,7 @@ export default function FontConverter() {
             {/* Font file upload with drag and drop */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Font File
+            폰트 파일
           </label>
           <div
             ref={dropZoneRef}
@@ -1796,7 +1796,7 @@ export default function FontConverter() {
           {isValidating && (
             <div className="mt-2 flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400">
               <div className="animate-spin h-4 w-4 border-2 border-blue-500 border-t-transparent rounded-full"></div>
-              <span>Validating font file...</span>
+              <span>폰트 파일 검증 중...</span>
             </div>
           )}
 
@@ -1823,12 +1823,12 @@ export default function FontConverter() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span className="font-medium">Font loaded successfully</span>
+                    <span className="font-medium">폰트 로드 완료</span>
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm mt-2">
                     <div>
                       <span className="text-gray-500 dark:text-gray-400">
-                        Family:{" "}
+                        패밀리:{" "}
                       </span>
                       <span className="text-gray-900 dark:text-white font-medium">
                         {fontInfo.familyName}
@@ -1836,7 +1836,7 @@ export default function FontConverter() {
                     </div>
                     <div>
                       <span className="text-gray-500 dark:text-gray-400">
-                        Style:{" "}
+                        스타일:{" "}
                       </span>
                       <span className="text-gray-900 dark:text-white font-medium">
                         {fontInfo.styleName}
@@ -1844,7 +1844,7 @@ export default function FontConverter() {
                     </div>
                     <div>
                       <span className="text-gray-500 dark:text-gray-400">
-                        Glyphs:{" "}
+                        글리프:{" "}
                       </span>
                       <span className="text-gray-900 dark:text-white font-medium">
                         {fontInfo.numGlyphs.toLocaleString()}
@@ -1852,7 +1852,7 @@ export default function FontConverter() {
                     </div>
                     <div>
                       <span className="text-gray-500 dark:text-gray-400">
-                        Size:{" "}
+                        크기:{" "}
                       </span>
                       <span className="text-gray-900 dark:text-white font-medium">
                         {formatFileSize(fontInfo.fileSize)}
@@ -1874,7 +1874,7 @@ export default function FontConverter() {
                     />
                   </svg>
                   <div>
-                    <p className="font-medium">Font validation failed</p>
+                    <p className="font-medium">폰트 검증 실패</p>
                     <p className="text-sm mt-1">{fontInfo.error}</p>
                   </div>
                 </div>
@@ -1887,13 +1887,13 @@ export default function FontConverter() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Font Name
+              폰트 이름
             </label>
             <input
               type="text"
               value={fontName}
               onChange={(e) => setFontName(e.target.value)}
-              placeholder="e.g., myfont"
+              placeholder="예: myfont"
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md
                 bg-white dark:bg-gray-700 text-gray-900 dark:text-white
                 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -1901,7 +1901,7 @@ export default function FontConverter() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Font Size (pt)
+              폰트 크기 (pt)
             </label>
             <input
               type="number"
@@ -1919,7 +1919,7 @@ export default function FontConverter() {
         {/* Bit depth selection */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Bit Depth
+            비트 깊이
           </label>
           <div className="flex gap-4">
             <label className="flex items-center gap-2 cursor-pointer">
@@ -1930,7 +1930,7 @@ export default function FontConverter() {
                 className="w-4 h-4 text-blue-600"
               />
               <span className="text-gray-700 dark:text-gray-300">
-                1-bit (Black & White)
+                1비트 (흑백)
               </span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
@@ -1941,7 +1941,7 @@ export default function FontConverter() {
                 className="w-4 h-4 text-blue-600"
               />
               <span className="text-gray-700 dark:text-gray-300">
-                2-bit (4 Grayscale Levels)
+                2비트 (4단계 그레이스케일)
               </span>
             </label>
           </div>
@@ -1950,13 +1950,13 @@ export default function FontConverter() {
         {/* Font Rendering Options */}
         <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
           <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
-            Rendering Options
+            렌더링 옵션
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {/* Char Spacing */}
             <div>
               <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
-                Char Spacing (px)
+                자간 (px)
               </label>
               <input
                 type="number"
@@ -1972,7 +1972,7 @@ export default function FontConverter() {
             {/* Line Spacing */}
             <div>
               <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
-                Line Spacing (x)
+                행간 (배수)
               </label>
               <input
                 type="number"
@@ -1989,7 +1989,7 @@ export default function FontConverter() {
             {/* Boldness */}
             <div>
               <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
-                Boldness
+                굵기
               </label>
               <input
                 type="range"
@@ -2005,7 +2005,7 @@ export default function FontConverter() {
             {/* Italic Angle */}
             <div>
               <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
-                Italic Angle
+                이텔릭체 기울기
               </label>
               <input
                 type="range"
@@ -2021,7 +2021,7 @@ export default function FontConverter() {
             {/* Horizontal Scale */}
             <div>
               <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
-                Width Scale (%)
+                장평 (%)
               </label>
               <input
                 type="number"
@@ -2037,7 +2037,7 @@ export default function FontConverter() {
             {/* Baseline Shift */}
             <div>
               <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
-                Baseline Shift (px)
+                베이스라인 (px)
               </label>
               <input
                 type="number"
@@ -2060,7 +2060,7 @@ export default function FontConverter() {
                 className="w-4 h-4 text-blue-600 rounded"
               />
               <label htmlFor="antialiasing" className="text-xs text-gray-600 dark:text-gray-400">
-                Antialiasing
+                안티앨리어싱
               </label>
             </div>
 
@@ -2079,7 +2079,7 @@ export default function FontConverter() {
                 }}
                 className="text-xs px-2 py-1.5 text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20"
               >
-                Reset Options
+                초기화
               </button>
             </div>
           </div>
@@ -2088,7 +2088,7 @@ export default function FontConverter() {
         {/* Test Text Input */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Test Text
+            미리보기 텍스트
           </label>
           <textarea
             value={previewText}
@@ -2096,14 +2096,14 @@ export default function FontConverter() {
             rows={3}
             className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md
               bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-mono"
-            placeholder="Enter text to preview..."
+            placeholder="미리보기할 텍스트를 입력하세요..."
           />
         </div>
 
         {/* Quick Presets (Toggle) */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-            Quick Presets (토글)
+            유니코드 범위
           </label>
           <div className="grid grid-cols-2 gap-2">
             {QUICK_PRESETS.map((preset) => {
@@ -2182,12 +2182,12 @@ export default function FontConverter() {
               </button>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Unicode Ranges (세부 선택)
+                  유니코드 범위 (세부 선택)
                 </label>
                 <span className="text-xs text-gray-500 dark:text-gray-400">
-                  {selectedRanges.length} ranges, {totalSelectedChars.toLocaleString()} characters
+                  {selectedRanges.length}개 범위, {totalSelectedChars.toLocaleString()}자
                   {totalSelectedChars > 10000 && (
-                    <span className="ml-1 text-yellow-600 dark:text-yellow-400">(Large)</span>
+                    <span className="ml-1 text-yellow-600 dark:text-yellow-400">(대용량)</span>
                   )}
                 </span>
               </div>
@@ -2211,21 +2211,21 @@ export default function FontConverter() {
                   onClick={handleSelectAll}
                   className="text-xs px-2 py-1 text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20"
                 >
-                  Select All
+                  전체 선택
                 </button>
                 <button
                   type="button"
                   onClick={handleDeselectAll}
                   className="text-xs px-2 py-1 text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20"
                 >
-                  Deselect All
+                  전체 해제
                 </button>
                 <button
                   type="button"
                   onClick={handleResetToDefaults}
                   className="text-xs px-2 py-1 text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20"
                 >
-                  Reset Defaults
+                  기본값 복원
                 </button>
               </div>
 
@@ -2341,7 +2341,7 @@ export default function FontConverter() {
         {/* Custom intervals */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Custom Unicode Intervals (Hex)
+            사용자 정의 유니코드 범위 (16진수)
           </label>
           <div className="flex gap-2 items-center">
             <input
@@ -2353,7 +2353,7 @@ export default function FontConverter() {
                   start: e.target.value,
                 }))
               }
-              placeholder="Start (e.g., AC00)"
+              placeholder="시작 (예: AC00)"
               className="w-32 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md
                 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
             />
@@ -2364,7 +2364,7 @@ export default function FontConverter() {
               onChange={(e) =>
                 setCustomInterval((prev) => ({ ...prev, end: e.target.value }))
               }
-              placeholder="End (e.g., D7AF)"
+              placeholder="끝 (예: D7AF)"
               className="w-32 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md
                 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
             />
@@ -2373,7 +2373,7 @@ export default function FontConverter() {
               onClick={handleAddCustomInterval}
               className="px-3 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500"
             >
-              Add
+              추가
             </button>
           </div>
           {customIntervals.length > 0 && (
@@ -2410,8 +2410,8 @@ export default function FontConverter() {
                   transition-colors duration-200"
               >
                 {conversionState.status === "converting"
-                  ? "Converting..."
-                  : "Convert to EPDFont"}
+                  ? "변환 중..."
+                  : "EPDFont로 변환"}
               </button>
             </div>
 
@@ -2425,7 +2425,7 @@ export default function FontConverter() {
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
               <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                 <h2 className="text-lg font-medium text-gray-900 dark:text-white">
-                  Preview ({PREVIEW_WIDTH}x{PREVIEW_HEIGHT})
+                  미리보기 ({PREVIEW_WIDTH}x{PREVIEW_HEIGHT})
                 </h2>
                 <div className="flex items-center gap-3 flex-wrap">
                   {/* Preview Colors */}
@@ -2509,7 +2509,7 @@ export default function FontConverter() {
                   />
                   {!fontData && (
                     <div className="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-500 pointer-events-none">
-                      <p className="text-lg">Load a font to see preview</p>
+                      <p className="text-lg">폰트를 로드하면 미리보기가 표시됩니다</p>
                     </div>
                   )}
                 </div>
@@ -2519,7 +2519,7 @@ export default function FontConverter() {
               <div className="mt-3 text-xs text-gray-500 dark:text-gray-400 text-center">
                 <span className="inline-flex items-center gap-1">
                   <span className="w-3 h-3 rounded" style={{ backgroundColor: "rgb(200, 100, 100)" }}></span>
-                  Characters not in selected Unicode ranges (will not be converted)
+                  선택한 유니코드 범위에 포함되지 않은 문자 (변환되지 않음)
                 </span>
               </div>
             </div>
@@ -2547,23 +2547,23 @@ export default function FontConverter() {
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  <span className="font-medium">Conversion Successful!</span>
+                  <span className="font-medium">변환 완료!</span>
                 </div>
                 <div className="grid grid-cols-3 gap-4 text-sm">
                   <div>
-                    <p className="text-gray-500 dark:text-gray-400">Glyphs</p>
+                    <p className="text-gray-500 dark:text-gray-400">글리프</p>
                     <p className="font-medium text-gray-900 dark:text-white">
                       {conversionState.result.glyphCount?.toLocaleString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-gray-500 dark:text-gray-400">Intervals</p>
+                    <p className="text-gray-500 dark:text-gray-400">범위</p>
                     <p className="font-medium text-gray-900 dark:text-white">
                       {conversionState.result.intervalCount}
                     </p>
                   </div>
                   <div>
-                    <p className="text-gray-500 dark:text-gray-400">File Size</p>
+                    <p className="text-gray-500 dark:text-gray-400">파일 크기</p>
                     <p className="font-medium text-gray-900 dark:text-white">
                       {formatFileSize(conversionState.result.totalSize || 0)}
                     </p>
@@ -2575,7 +2575,7 @@ export default function FontConverter() {
                     hover:bg-green-700 focus:ring-4 focus:ring-green-300
                     transition-colors duration-200"
                 >
-                  Download .epdfont File
+                  .epdfont 파일 다운로드
                 </button>
                 <a ref={downloadRef} className="hidden" />
               </div>
