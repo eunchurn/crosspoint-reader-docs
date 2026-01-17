@@ -265,10 +265,10 @@ export default function GuidePage() {
 
                   <div>
                     <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                      3.6 슬립 화면 커스터마이징
+                      3.6 절전 화면 커스터마이징
                     </h3>
                     <p className="text-gray-600 mb-2">
-                      SD 카드에 커스텀 이미지를 배치하여 슬립 화면을 변경할 수
+                      SD 카드에 커스텀 이미지를 배치하여 절전 화면을 변경할 수
                       있습니다:
                     </p>
                     <ul className="list-disc list-inside text-gray-600 space-y-1">
@@ -282,14 +282,22 @@ export default function GuidePage() {
                       <li>
                         <strong>여러 이미지:</strong> 루트에{" "}
                         <code className="bg-gray-100 px-1 rounded">sleep</code>{" "}
-                        폴더를 만들고 .bmp 이미지 배치
+                        폴더를 만들고{" "}
+                        <code className="bg-gray-100 px-1 rounded">.bmp</code>{" "}
+                        이미지 배치. 이 폴더에 이미지가 있으면{" "}
+                        <code className="bg-gray-100 px-1 rounded">
+                          sleep.bmp
+                        </code>{" "}
+                        파일보다 우선하며, 절전 시마다 무작위로 하나가
+                        선택됩니다.
                       </li>
                     </ul>
                     <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
                       <p className="text-yellow-800 text-sm">
                         <strong>참고:</strong> 이 이미지를 사용하려면{" "}
-                        <strong>설정</strong>에서 <strong>슬립 화면</strong>을{" "}
-                        <strong>Custom</strong>으로 설정해야 합니다.
+                        <strong>설정</strong>에서{" "}
+                        <strong>절전 화면 이미지</strong>를{" "}
+                        <strong>사용자 정의</strong>로 설정해야 합니다.
                       </p>
                     </div>
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
