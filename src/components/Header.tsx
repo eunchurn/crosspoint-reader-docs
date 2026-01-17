@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { getAssetPath } from "@/lib/basePath";
 
 interface NavItem {
@@ -26,9 +27,12 @@ const navigation: NavItem[] = [
   { name: "릴리즈", href: "/releases" },
 ];
 
-function DropdownMenu({ item }: { item: NavItem }) {
+function DropdownMenu({ item, pathname }: { item: NavItem; pathname: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // 드롭다운 하위 메뉴 중 현재 경로와 일치하는 것이 있는지 확인
+  const isChildActive = item.children?.some((child) => pathname === child.href || pathname.startsWith(child.href + "/"));
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -47,7 +51,11 @@ function DropdownMenu({ item }: { item: NavItem }) {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors flex items-center gap-1"
+        className={`text-sm font-medium transition-colors flex items-center gap-1 ${
+          isChildActive
+            ? "text-blue-600"
+            : "text-gray-600 hover:text-blue-600"
+        }`}
       >
         {item.name}
         <svg
@@ -66,16 +74,23 @@ function DropdownMenu({ item }: { item: NavItem }) {
       </button>
       {isOpen && (
         <div className="absolute top-full left-0 mt-2 w-40 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
-          {item.children?.map((child) => (
-            <Link
-              key={child.name}
-              href={child.href}
-              onClick={() => setIsOpen(false)}
-              className="block px-4 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition-colors"
-            >
-              {child.name}
-            </Link>
-          ))}
+          {item.children?.map((child) => {
+            const isActive = pathname === child.href || pathname.startsWith(child.href + "/");
+            return (
+              <Link
+                key={child.name}
+                href={child.href}
+                onClick={() => setIsOpen(false)}
+                className={`block px-4 py-2 text-sm transition-colors ${
+                  isActive
+                    ? "text-blue-600 bg-blue-50 font-medium"
+                    : "text-gray-600 hover:text-blue-600 hover:bg-gray-50"
+                }`}
+              >
+                {child.name}
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>
@@ -85,18 +100,26 @@ function DropdownMenu({ item }: { item: NavItem }) {
 function MobileMenuItem({
   item,
   onClose,
+  pathname,
 }: {
   item: NavItem;
   onClose: () => void;
+  pathname: string;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   if (item.children) {
+    const isChildActive = item.children.some((child) => pathname === child.href || pathname.startsWith(child.href + "/"));
+
     return (
       <div>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full flex items-center justify-between px-3 py-2 text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-lg transition-colors"
+          className={`w-full flex items-center justify-between px-3 py-2 text-base font-medium rounded-lg transition-colors ${
+            isChildActive
+              ? "text-blue-600"
+              : "text-gray-600 hover:text-blue-600 hover:bg-gray-50"
+          }`}
         >
           {item.name}
           <svg
@@ -115,27 +138,40 @@ function MobileMenuItem({
         </button>
         {isExpanded && (
           <div className="pl-4 space-y-1">
-            {item.children.map((child) => (
-              <Link
-                key={child.name}
-                href={child.href}
-                onClick={onClose}
-                className="block px-3 py-2 text-sm text-gray-500 hover:text-blue-600 hover:bg-gray-50 rounded-lg transition-colors"
-              >
-                {child.name}
-              </Link>
-            ))}
+            {item.children.map((child) => {
+              const isActive = pathname === child.href || pathname.startsWith(child.href + "/");
+              return (
+                <Link
+                  key={child.name}
+                  href={child.href}
+                  onClick={onClose}
+                  className={`block px-3 py-2 text-sm rounded-lg transition-colors ${
+                    isActive
+                      ? "text-blue-600 bg-blue-50 font-medium"
+                      : "text-gray-500 hover:text-blue-600 hover:bg-gray-50"
+                  }`}
+                >
+                  {child.name}
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>
     );
   }
 
+  const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+
   return (
     <Link
       href={item.href!}
       onClick={onClose}
-      className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-lg transition-colors"
+      className={`block px-3 py-2 text-base font-medium rounded-lg transition-colors ${
+        isActive
+          ? "text-blue-600 bg-blue-50"
+          : "text-gray-600 hover:text-blue-600 hover:bg-gray-50"
+      }`}
     >
       {item.name}
     </Link>
@@ -144,6 +180,7 @@ function MobileMenuItem({
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
@@ -166,19 +203,25 @@ export default function Header() {
 
           {/* Desktop navigation */}
           <div className="hidden nav:flex nav:items-center nav:gap-x-8">
-            {navigation.map((item) =>
-              item.children ? (
-                <DropdownMenu key={item.name} item={item} />
-              ) : (
+            {navigation.map((item) => {
+              if (item.children) {
+                return <DropdownMenu key={item.name} item={item} pathname={pathname} />;
+              }
+              const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+              return (
                 <Link
                   key={item.name}
                   href={item.href!}
-                  className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+                  className={`text-sm font-medium transition-colors ${
+                    isActive
+                      ? "text-blue-600"
+                      : "text-gray-600 hover:text-blue-600"
+                  }`}
                 >
                   {item.name}
                 </Link>
-              ),
-            )}
+              );
+            })}
             <a
               href="https://github.com/eunchurn/crosspoint-reader-ko"
               target="_blank"
@@ -246,6 +289,7 @@ export default function Header() {
                   key={item.name}
                   item={item}
                   onClose={() => setMobileMenuOpen(false)}
+                  pathname={pathname}
                 />
               ))}
               <a
