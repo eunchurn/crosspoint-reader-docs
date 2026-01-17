@@ -3,8 +3,8 @@ import { getAssetPath } from "@/lib/basePath";
 const officialFirmwareUrls = {
   "3.1.1-EN":
     "http://gotaserver.xteink.com/api/download/ESP32C3/V3.1.1/V3.1.1-EN.bin",
-  "3.1.7-CH":
-    "http://47.122.74.33:5000/api/download/ESP32C3/V3.1.7/V3.1.7_2-CH-X4.bin",
+  "3.1.8-CH":
+    "http://47.122.74.33:5000/api/download/ESP32C3/V3.1.8/V3.1.8_CH_X4_0117_2.bin",
 };
 
 export interface FirmwareVersions {

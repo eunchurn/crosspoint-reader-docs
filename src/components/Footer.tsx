@@ -139,6 +139,16 @@ export default function Footer() {
                   Calibre Workflow
                 </a>
               </li>
+              <li>
+                <a
+                  href="https://wallpaperconverter.jakegreen.dev/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-blue-400 transition-colors"
+                >
+                  X4 Wallpaper Converter
+                </a>
+              </li>
             </ul>
           </div>
 

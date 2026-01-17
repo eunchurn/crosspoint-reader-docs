@@ -303,7 +303,17 @@ export default function GuidePage() {
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
                       <p className="text-blue-800 text-sm">
                         <strong>팁:</strong> 최상의 결과를 위해 24비트 색상의
-                        비압축 BMP 파일과 480x800 픽셀 해상도를 사용하세요.
+                        비압축 BMP 파일과 480x800 픽셀 해상도를 사용하세요.{" "}
+                        <a
+                          href="https://wallpaperconverter.jakegreen.dev/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline font-medium"
+                        >
+                          X4 Wallpaper Converter
+                        </a>
+                        를 사용하면 이미지를 적합한 형식으로 쉽게 변환할 수
+                        있습니다.
                       </p>
                     </div>
                   </div>
