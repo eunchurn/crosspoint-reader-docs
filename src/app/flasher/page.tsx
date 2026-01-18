@@ -23,7 +23,9 @@ export default function FlasherPage() {
   }, []);
 
   const isDeviceConnected = stepData.some(
-    (step) => step.name === "장치 연결" && step.status === "success",
+    (step) =>
+      (step.name === "장치 연결" || step.name.includes("장치 연결")) &&
+      step.status === "success",
   );
   const isRestartNeeded = stepData.some(
     (step) => step.name === "장치 재시작" && step.status === "success",
@@ -45,10 +47,12 @@ export default function FlasherPage() {
   }, [isDeviceConnected, hasScrolled]);
 
   useEffect(() => {
-    if (!isRunning) {
+    // 새 작업이 시작되면 스크롤 상태 리셋 (모든 단계가 pending일 때)
+    const allPending = stepData.length > 0 && stepData.every((step) => step.status === "pending");
+    if (allPending || !isRunning) {
       setHasScrolled(false);
     }
-  }, [isRunning]);
+  }, [isRunning, stepData]);
 
   return (
     <div className="min-h-screen flex flex-col">
