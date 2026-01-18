@@ -121,25 +121,38 @@ function parseMarkdown(text: string): string {
 
   const lines = result.split("\n");
   const processedLines: string[] = [];
-  let inList = false;
+  // 리스트 깊이 스택 (각 깊이의 들여쓰기 레벨 저장)
+  const listStack: number[] = [];
+
+  // 리스트 아이템인지 확인하고 들여쓰기 레벨 반환
+  function getListItemInfo(line: string): { level: number; content: string } | null {
+    const match = line.match(/^(\s*)([-*])\s+(.+)$/);
+    if (!match) return null;
+    const indent = match[1].length;
+    // 2칸 또는 4칸 들여쓰기를 1레벨로 계산
+    const level = Math.floor(indent / 2);
+    return { level, content: match[3] };
+  }
+
+  // 현재 리스트 스택 닫기
+  function closeListsToLevel(targetLevel: number) {
+    while (listStack.length > targetLevel) {
+      listStack.pop();
+      processedLines.push("</ul>");
+    }
+  }
 
   for (const line of lines) {
     let processed = line;
 
     if (processed.startsWith("<!--CODE_BLOCK_")) {
-      if (inList) {
-        processedLines.push("</ul>");
-        inList = false;
-      }
+      closeListsToLevel(0);
       processedLines.push(processed);
       continue;
     }
 
     if (processed.match(/^#### /)) {
-      if (inList) {
-        processedLines.push("</ul>");
-        inList = false;
-      }
+      closeListsToLevel(0);
       const headingContent = processed.replace(/^#### (.+)$/, "$1");
       const formattedHeading = applyInlineFormatting(headingContent);
       processedLines.push(
@@ -148,10 +161,7 @@ function parseMarkdown(text: string): string {
       continue;
     }
     if (processed.match(/^### /)) {
-      if (inList) {
-        processedLines.push("</ul>");
-        inList = false;
-      }
+      closeListsToLevel(0);
       const headingContent = processed.replace(/^### (.+)$/, "$1");
       const formattedHeading = applyInlineFormatting(headingContent);
       processedLines.push(
@@ -160,10 +170,7 @@ function parseMarkdown(text: string): string {
       continue;
     }
     if (processed.match(/^## /)) {
-      if (inList) {
-        processedLines.push("</ul>");
-        inList = false;
-      }
+      closeListsToLevel(0);
       const headingContent = processed.replace(/^## (.+)$/, "$1");
       const formattedHeading = applyInlineFormatting(headingContent);
       processedLines.push(
@@ -172,23 +179,31 @@ function parseMarkdown(text: string): string {
       continue;
     }
 
-    if (processed.match(/^[-*] /)) {
-      if (!inList) {
-        processedLines.push(
-          '<ul class="my-2 space-y-1 list-disc list-inside">'
-        );
-        inList = true;
+    const listItem = getListItemInfo(processed);
+    if (listItem) {
+      const { level, content } = listItem;
+      const formattedContent = applyInlineFormatting(content);
+
+      if (level > listStack.length - 1) {
+        // 새로운 하위 리스트 시작
+        while (listStack.length <= level) {
+          const ulClass = listStack.length === 0
+            ? 'my-2 space-y-1 list-disc list-inside'
+            : 'mt-1 ml-4 space-y-1 list-disc list-inside';
+          processedLines.push(`<ul class="${ulClass}">`);
+          listStack.push(listStack.length);
+        }
+      } else if (level < listStack.length - 1) {
+        // 상위 레벨로 돌아가기
+        closeListsToLevel(level + 1);
       }
-      // 먼저 리스트 내용을 추출하고 인라인 포매팅 적용 후 <li>로 감싸기
-      const listContent = processed.replace(/^[-*] (.+)$/, "$1");
-      const formattedContent = applyInlineFormatting(listContent);
+
       processedLines.push(`<li>${formattedContent}</li>`);
       continue;
     }
 
-    if (inList && processed.trim() !== "") {
-      processedLines.push("</ul>");
-      inList = false;
+    if (listStack.length > 0 && processed.trim() !== "") {
+      closeListsToLevel(0);
     }
 
     if (processed.trim() === "") {
@@ -200,9 +215,7 @@ function parseMarkdown(text: string): string {
     processedLines.push(`<div class="my-2">${processed}</div>`);
   }
 
-  if (inList) {
-    processedLines.push("</ul>");
-  }
+  closeListsToLevel(0);
 
   result = processedLines.join("\n");
 
