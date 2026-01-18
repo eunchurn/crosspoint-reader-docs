@@ -515,10 +515,19 @@ export async function convertTTFToEPDFont(
     onProgress?.(90, "Building binary...");
     await yieldToEventLoop();
 
-    // Get font metrics
-    const advanceY = Math.ceil(activeFont.height / 64) || fontSize;
-    const ascender = Math.ceil(activeFont.ascender / 64) || Math.ceil(fontSize * 0.8);
-    const descender = Math.floor(activeFont.descender / 64) || Math.floor(-fontSize * 0.2);
+    // Get font metrics from scaled size (after SetPixelSize)
+    // FreeType stores metrics in 26.6 fixed-point format (multiply by 64)
+    // Use size.* for scaled metrics, not face.* which are unscaled
+    const sizeMetrics = activeFont.size;
+    const advanceY = sizeMetrics?.height
+      ? Math.ceil(sizeMetrics.height / 64)
+      : fontSize;
+    const ascender = sizeMetrics?.ascender
+      ? Math.ceil(sizeMetrics.ascender / 64)
+      : Math.ceil(fontSize * 0.8);
+    const descender = sizeMetrics?.descender
+      ? Math.floor(sizeMetrics.descender / 64)
+      : Math.floor(-fontSize * 0.2);
 
     // Write binary
     const binaryData = writeEPDFontBinary(
@@ -538,6 +547,9 @@ export async function convertTTFToEPDFont(
       glyphCount: orderedGlyphs.length,
       intervalCount: validatedIntervals.length,
       totalSize: binaryData.length,
+      advanceY,
+      ascender,
+      descender,
     };
   } catch (error) {
     console.error("Conversion error:", error);

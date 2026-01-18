@@ -2569,6 +2569,26 @@ export default function FontConverter() {
                     </p>
                   </div>
                 </div>
+                <div className="grid grid-cols-3 gap-4 text-sm mt-2">
+                  <div>
+                    <p className="text-gray-500 dark:text-gray-400">줄 높이</p>
+                    <p className="font-medium text-gray-900 dark:text-white">
+                      {conversionState.result.advanceY}px
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-500 dark:text-gray-400">어센더</p>
+                    <p className="font-medium text-gray-900 dark:text-white">
+                      {conversionState.result.ascender}px
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-500 dark:text-gray-400">디센더</p>
+                    <p className="font-medium text-gray-900 dark:text-white">
+                      {conversionState.result.descender}px
+                    </p>
+                  </div>
+                </div>
                 <button
                   onClick={handleDownload}
                   className="w-full py-2 px-4 bg-green-600 text-white font-medium rounded-lg
