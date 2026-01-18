@@ -1,15 +1,16 @@
 import { getAssetPath } from "@/lib/basePath";
 
-const officialFirmwareUrls = {
-  "3.1.1-EN":
-    "http://gotaserver.xteink.com/api/download/ESP32C3/V3.1.1/V3.1.1-EN.bin",
-  "3.1.8-CH":
-    "http://47.122.74.33:5000/api/download/ESP32C3/V3.1.8/V3.1.8_CH_X4_0117_2.bin",
+// 공식 펌웨어는 빌드 시 다운로드되어 로컬에 저장됨 (Mixed Content 문제 해결)
+const officialFirmwareFiles = {
+  "3.1.1-EN": "/firmware/english-official-firmware.bin",
+  "3.1.8-CH": "/firmware/chinese-official-firmware.bin",
 };
 
 export interface FirmwareVersions {
   korean: string;
   crosspoint: string;
+  englishOfficial: string;
+  chineseOfficial: string;
   downloadedAt: string;
 }
 
@@ -26,6 +27,8 @@ export async function getFirmwareVersions(): Promise<FirmwareVersions> {
     return {
       korean: "unknown",
       crosspoint: "unknown",
+      englishOfficial: "unknown",
+      chineseOfficial: "unknown",
       downloadedAt: "",
     };
   }
@@ -42,9 +45,9 @@ async function fetchFirmwareFromUrl(url: string): Promise<Uint8Array> {
 }
 
 export async function getOfficialFirmware(
-  version: keyof typeof officialFirmwareUrls,
+  version: keyof typeof officialFirmwareFiles,
 ) {
-  const url = officialFirmwareUrls[version];
+  const url = getAssetPath(officialFirmwareFiles[version]);
   return fetchFirmwareFromUrl(url);
 }
 

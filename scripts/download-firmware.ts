@@ -14,6 +14,8 @@ interface FirmwareSource {
 interface FirmwareVersionInfo {
   korean: string;
   crosspoint: string;
+  englishOfficial: string;
+  chineseOfficial: string;
   downloadedAt: string;
 }
 
@@ -29,6 +31,29 @@ const FIRMWARE_SOURCES: FirmwareSource[] = [
     url: "https://api.github.com/repos/daveallie/crosspoint-reader/releases/latest",
     filename: "crosspoint-firmware.bin",
     key: "crosspoint",
+  },
+];
+
+// 공식 펌웨어 (HTTP URL이라 HTTPS 페이지에서 직접 로드 불가)
+interface OfficialFirmware {
+  name: string;
+  url: string;
+  filename: string;
+  version: string;
+}
+
+const OFFICIAL_FIRMWARE_SOURCES: OfficialFirmware[] = [
+  {
+    name: "English Official",
+    url: "http://gotaserver.xteink.com/api/download/ESP32C3/V3.1.1/V3.1.1-EN.bin",
+    filename: "english-official-firmware.bin",
+    version: "3.1.1",
+  },
+  {
+    name: "Chinese Official",
+    url: "http://47.122.74.33:5000/api/download/ESP32C3/V3.1.9/V3.1.9_CH_X4_0117.bin",
+    filename: "chinese-official-firmware.bin",
+    version: "3.1.9_0117",
   },
 ];
 
@@ -93,6 +118,35 @@ async function downloadFirmware(source: FirmwareSource): Promise<void> {
   }
 }
 
+async function downloadOfficialFirmware(source: OfficialFirmware): Promise<void> {
+  console.log(`📥 Downloading ${source.name} firmware (${source.version})...`);
+
+  try {
+    const response = await fetch(source.url, {
+      headers: {
+        "User-Agent": "crosspoint-reader-docs-build",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to download: ${response.status}`);
+    }
+
+    const firmwareBuffer = await response.arrayBuffer();
+
+    const outputPath = join(PUBLIC_FIRMWARE_DIR, source.filename);
+    writeFileSync(outputPath, Buffer.from(firmwareBuffer));
+
+    console.log(
+      `   ✅ Saved to public/firmware/${source.filename} (${(firmwareBuffer.byteLength / 1024).toFixed(1)} KB)`
+    );
+  } catch (error) {
+    console.error(`   ❌ Failed to download ${source.name}:`, error);
+    // 공식 펌웨어는 실패해도 빌드 중단하지 않음 (선택적)
+    console.log(`   ⚠️ Skipping ${source.name} - will not be available`);
+  }
+}
+
 async function main(): Promise<void> {
   console.log("🔧 Downloading firmware files for build...\n");
 
@@ -102,9 +156,16 @@ async function main(): Promise<void> {
     console.log(`📁 Created directory: public/firmware\n`);
   }
 
-  // Download all firmware files
+  // Download community firmware files (required)
   for (const source of FIRMWARE_SOURCES) {
     await downloadFirmware(source);
+    console.log("");
+  }
+
+  // Download official firmware files (optional, may fail due to HTTP)
+  console.log("📥 Downloading official firmware files...\n");
+  for (const source of OFFICIAL_FIRMWARE_SOURCES) {
+    await downloadOfficialFirmware(source);
     console.log("");
   }
 
@@ -112,6 +173,8 @@ async function main(): Promise<void> {
   const versionData: FirmwareVersionInfo = {
     korean: versionInfo.korean || "unknown",
     crosspoint: versionInfo.crosspoint || "unknown",
+    englishOfficial: OFFICIAL_FIRMWARE_SOURCES.find(s => s.name === "English Official")?.version || "unknown",
+    chineseOfficial: OFFICIAL_FIRMWARE_SOURCES.find(s => s.name === "Chinese Official")?.version || "unknown",
     downloadedAt: new Date().toISOString(),
   };
 
@@ -119,7 +182,9 @@ async function main(): Promise<void> {
   writeFileSync(versionPath, JSON.stringify(versionData, null, 2));
   console.log(`📋 Saved version info to public/firmware/versions.json`);
   console.log(`   Korean: ${versionData.korean}`);
-  console.log(`   CrossPoint: ${versionData.crosspoint}\n`);
+  console.log(`   CrossPoint: ${versionData.crosspoint}`);
+  console.log(`   English Official: ${versionData.englishOfficial}`);
+  console.log(`   Chinese Official: ${versionData.chineseOfficial}\n`);
 
   console.log("✅ All firmware files downloaded successfully!");
 }
