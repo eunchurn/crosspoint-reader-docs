@@ -25,6 +25,9 @@ export default function FlasherPage() {
   const isDeviceConnected = stepData.some(
     (step) => step.name === "장치 연결" && step.status === "success",
   );
+  const isRestartNeeded = stepData.some(
+    (step) => step.name === "장치 재시작" && step.status === "success",
+  );
   const [hasScrolled, setHasScrolled] = useState(false);
 
   useEffect(() => {
@@ -286,30 +289,54 @@ export default function FlasherPage() {
           </section>
 
           {/* Device Restart Instructions */}
-          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <div
+            className={`p-4 rounded-lg transition-all duration-500 ${
+              isRestartNeeded
+                ? "bg-green-50 border-2 border-green-500 shadow-lg shadow-green-100 ring-2 ring-green-300 ring-offset-2"
+                : "bg-blue-50 border border-blue-200"
+            }`}
+          >
             <div className="flex">
               <div className="flex-shrink-0">
                 <svg
-                  className="h-5 w-5 text-blue-400"
+                  className={`h-5 w-5 ${isRestartNeeded ? "text-green-500" : "text-blue-400"}`}
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                    clipRule="evenodd"
-                  />
+                  {isRestartNeeded ? (
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  ) : (
+                    <path
+                      fillRule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                      clipRule="evenodd"
+                    />
+                  )}
                 </svg>
               </div>
               <div className="ml-3">
-                <h3 className="text-sm font-medium text-blue-800">
-                  장치 재시작 안내
+                <h3
+                  className={`text-sm font-medium ${
+                    isRestartNeeded ? "text-green-800" : "text-blue-800"
+                  }`}
+                >
+                  {isRestartNeeded
+                    ? "플래싱 완료! 장치를 재시작하세요"
+                    : "장치 재시작 안내"}
                 </h3>
-                <div className="mt-2 text-sm text-blue-700">
-                  <p>
-                    쓰기 작업을 완료한 후에는 오른쪽 하단 근처의 작은 버튼을
-                    눌렀다 떼고, 바로 메인 전원 버튼을 약 1초간 길게 눌러 장치를
-                    재시작해야 합니다.
+                <div
+                  className={`mt-2 text-sm ${
+                    isRestartNeeded ? "text-green-700" : "text-blue-700"
+                  }`}
+                >
+                  <p className={isRestartNeeded ? "font-medium" : ""}>
+                    {isRestartNeeded
+                      ? "오른쪽 하단 근처의 작은 버튼(리셋버튼)을 눌렀다 떼고, 바로 전원버튼을 1초 누르세요."
+                      : "쓰기 작업을 완료한 후에는 오른쪽 하단 근처의 작은 버튼을 눌렀다 떼고, 바로 메인 전원 버튼을 약 1초간 길게 눌러 장치를 재시작해야 합니다."}
                   </p>
                 </div>
               </div>
