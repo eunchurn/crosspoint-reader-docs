@@ -286,10 +286,22 @@ export async function convertTTFToEPDFont(
   fontData: Uint8Array,
   options: ConversionOptions
 ): Promise<ConversionResult> {
-  const { fontSize, is2Bit, additionalIntervals, includeKorean, onProgress } =
-    options;
+  const {
+    fontSize,
+    is2Bit,
+    charSpacing = 0,
+    lineSpacing = 1.0,
+    boldness = 0,
+    italicAngle = 0,
+    horizontalScale = 100,
+    baselineShift = 0,
+    antialiasing = true,
+    additionalIntervals,
+    includeKorean,
+    onProgress,
+  } = options;
 
-  const threshold = 127; // Pixel render threshold
+  const threshold = antialiasing ? 127 : 1; // 안티앨리어싱 비활성화 시 더 낮은 임계값
 
   try {
     onProgress?.(0, "Loading font...");
@@ -397,15 +409,22 @@ export async function convertTTFToEPDFont(
       await yieldToEventLoop();
     }
 
+    // 렌더링 옵션을 적용한 advanceX 계산 헬퍼
+    function calculateAdvanceX(baseAdvanceX: number): number {
+      const adjusted = baseAdvanceX + charSpacing;
+      return Math.round(adjusted * (horizontalScale / 100));
+    }
+
     function processGlyph(charCode: number, glyphInfo: GlyphInfo) {
       const bitmap = glyphInfo.bitmap;
 
       if (!bitmap || bitmap.width <= 0 || bitmap.rows <= 0) {
-        // Empty glyph
+        // Empty glyph (공백 등)
+        const baseAdvanceX = Math.round(glyphInfo.advance?.x / 64) || 0;
         const emptyGlyph: GlyphProps = {
           width: 0,
           height: 0,
-          advanceX: Math.round(glyphInfo.advance?.x / 64) || 0,
+          advanceX: calculateAdvanceX(baseAdvanceX),
           left: 0,
           top: 0,
           dataLength: 0,
@@ -426,10 +445,11 @@ export async function convertTTFToEPDFont(
         grayscale = Array.from(bitmap.buffer);
       } else {
         // No bitmap data
+        const baseAdvanceX = Math.round(glyphInfo.advance?.x / 64) || 0;
         const emptyGlyph: GlyphProps = {
           width: 0,
           height: 0,
-          advanceX: Math.round(glyphInfo.advance?.x / 64) || 0,
+          advanceX: calculateAdvanceX(baseAdvanceX),
           left: 0,
           top: 0,
           dataLength: 0,
@@ -445,12 +465,17 @@ export async function convertTTFToEPDFont(
         ? convertTo2bit(grayscale, bitmap.width, bitmap.rows)
         : convertTo1bit(grayscale, bitmap.width, bitmap.rows);
 
+      // Apply rendering options
+      const baseAdvanceX = Math.round(glyphInfo.advance?.x / 64) || bitmap.width;
+      // 베이스라인 조정 적용
+      const adjustedTop = (glyphInfo.bitmap_top || 0) + baselineShift;
+
       const glyph: GlyphProps = {
         width: bitmap.width,
         height: bitmap.rows,
-        advanceX: Math.round(glyphInfo.advance?.x / 64) || bitmap.width,
+        advanceX: calculateAdvanceX(baseAdvanceX),
         left: glyphInfo.bitmap_left || 0,
-        top: glyphInfo.bitmap_top || 0,
+        top: adjustedTop,
         dataLength: packedData.length,
         dataOffset: totalDataSize,
         codePoint: charCode,
@@ -519,9 +544,11 @@ export async function convertTTFToEPDFont(
     // FreeType stores metrics in 26.6 fixed-point format (multiply by 64)
     // Use size.* for scaled metrics, not face.* which are unscaled
     const sizeMetrics = activeFont.size;
-    const advanceY = sizeMetrics?.height
+    const baseAdvanceY = sizeMetrics?.height
       ? Math.ceil(sizeMetrics.height / 64)
       : fontSize;
+    // Apply line spacing multiplier to advanceY
+    const advanceY = Math.ceil(baseAdvanceY * lineSpacing);
     const ascender = sizeMetrics?.ascender
       ? Math.ceil(sizeMetrics.ascender / 64)
       : Math.ceil(fontSize * 0.8);

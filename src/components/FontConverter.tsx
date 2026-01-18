@@ -1630,6 +1630,14 @@ export default function FontConverter() {
         fontName,
         fontSize,
         is2Bit,
+        // Rendering options
+        charSpacing,
+        lineSpacing,
+        boldness,
+        italicAngle,
+        horizontalScale,
+        baselineShift,
+        antialiasing,
         includeKorean: false, // No longer needed, handled by selectedRanges
         additionalIntervals: allIntervals.length > 0 ? allIntervals : undefined,
         onProgress: (progress, message) => {

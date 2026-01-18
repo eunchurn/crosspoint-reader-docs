@@ -37,7 +37,17 @@ export interface EPDFontData {
   bitmapData: Uint8Array;
 }
 
-export interface ConversionOptions {
+export interface RenderingOptions {
+  charSpacing?: number; // 자간 (px, 기본값: 0)
+  lineSpacing?: number; // 행간 배수 (기본값: 1.0)
+  boldness?: number; // 굵기 조정 (기본값: 0)
+  italicAngle?: number; // 이텔릭체 기울기 (도, 기본값: 0)
+  horizontalScale?: number; // 장평 (%, 기본값: 100)
+  baselineShift?: number; // 베이스라인 조정 (px, 기본값: 0)
+  antialiasing?: boolean; // 안티앨리어싱 (기본값: true)
+}
+
+export interface ConversionOptions extends RenderingOptions {
   fontName: string;
   fontSize: number;
   is2Bit: boolean;
