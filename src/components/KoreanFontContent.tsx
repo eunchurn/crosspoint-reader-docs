@@ -495,9 +495,8 @@ export default function KoreanFontContent() {
                 <div>
                   <h4 className="text-sm font-medium text-gray-800 mb-2">스크립트 다운로드</h4>
                   <a
-                    href="https://raw.githubusercontent.com/eunchurn/crosspoint-reader-docs/main/font-converter/ttf_to_epdfont.py"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="/ttf_to_epdfont.py"
+                    download="ttf_to_epdfont.py"
                     className="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 text-white text-sm font-medium rounded-lg hover:bg-gray-900 transition-colors"
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
