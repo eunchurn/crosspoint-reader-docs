@@ -389,6 +389,10 @@ export default function GuidePage() {
                         가운데, 오른쪽 중 선택
                       </li>
                       <li>
+                        <strong>문자 단위 줄바꿈:</strong> 단어 단위가 아닌 글자
+                        단위로 줄바꿈 (양쪽 정렬 시 단어 간격 균등 유지)
+                      </li>
+                      <li>
                         <strong>절전 시간:</strong> 비활성 상태 후 자동 슬립까지
                         시간 설정
                       </li>
