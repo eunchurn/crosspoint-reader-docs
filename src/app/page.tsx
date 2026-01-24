@@ -483,7 +483,7 @@ export default async function Home() {
 
               {/* Discord Community */}
               <a
-                href="https://discord.gg/8fmqVPqp"
+                href="https://discord.gg/pNmnyFDQwa"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-lg hover:border-indigo-300 transition-all"
