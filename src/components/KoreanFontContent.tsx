@@ -87,7 +87,7 @@ export default function KoreanFontContent() {
               </p>
               <ul className="list-disc list-inside text-gray-600 space-y-2">
                 <li>
-                  <strong>EPUB 리더:</strong> 을유1945 (Eulyoo1945) -
+                  <strong>EPUB 리더:</strong> KoPub 바탕 (KoPub Batang) -
                   한글/영문/한자 지원
                 </li>
                 <li>
@@ -128,7 +128,7 @@ export default function KoreanFontContent() {
                         EPUB 리더
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-700 border-b">
-                        Eulyoo1945
+                        KoPub Batang
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-700 border-b">
                         Regular
@@ -138,26 +138,7 @@ export default function KoreanFontContent() {
                       </td>
                       <td className="px-4 py-3 text-sm border-b">
                         <code className="bg-gray-100 px-2 py-1 rounded text-xs">
-                          eulyoo_2b.h
-                        </code>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-3 text-sm text-gray-700 border-b">
-                        EPUB 리더
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-700 border-b">
-                        Eulyoo1945
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-700 border-b">
-                        SemiBold
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-700 border-b">
-                        14
-                      </td>
-                      <td className="px-4 py-3 text-sm border-b">
-                        <code className="bg-gray-100 px-2 py-1 rounded text-xs">
-                          eulyoo_semibold_2b.h
+                          kopub_14_regular.h
                         </code>
                       </td>
                     </tr>
@@ -208,7 +189,7 @@ export default function KoreanFontContent() {
                 지원 유니코드 범위
               </h2>
               <p className="text-gray-600 mb-4">
-                을유1945 폰트는 다음 유니코드 범위를 지원합니다:
+                KoPub 바탕 폰트는 다음 유니코드 범위를 지원합니다:
               </p>
               <div className="overflow-x-auto">
                 <table className="min-w-full border border-gray-200 rounded-lg text-sm">
@@ -597,17 +578,35 @@ export default function KoreanFontContent() {
               </h2>
               <div className="space-y-4">
                 <div>
-                  <h3 className="font-semibold text-gray-800">을유1945</h3>
-                  <p className="text-gray-600">
+                  <h3 className="font-semibold text-gray-800">KoPub 바탕</h3>
+                  <p className="text-gray-600 mb-2">
                     <a
-                      href="https://www.eulyoo.co.kr/"
+                      href="https://www.kopus.org/biz-electronic-font2/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-600 hover:underline"
                     >
-                      을유문화사
+                      한국출판인회의
                     </a>
-                    에서 제공하는 서체입니다.
+                    에서 제공하는 서체입니다. 지적재산권은 문화체육관광부와 한국출판인회의에 있습니다.
+                  </p>
+                  <ul className="text-sm text-gray-600 list-disc list-inside space-y-1 ml-2">
+                    <li>출판업계, 기업, 개인 모두 별도 허가 절차 없이 무료 사용 가능</li>
+                    <li>종이책, 전자책, 인쇄물, 광고물, 온라인 상업적 이용 허용</li>
+                    <li>사전승인 없이 폰트 수정/변형 불가</li>
+                    <li>폰트 자체의 유료 판매, 양도 등 상업적 행위 금지</li>
+                  </ul>
+                  <p className="text-xs text-gray-500 mt-2">
+                    정확한 사용조건은{" "}
+                    <a
+                      href="https://www.kopus.org/wp-content/uploads/2021/04/%EC%84%9C%EC%B2%B4_%EB%9D%BC%EC%9D%B4%EC%84%A0%EC%8A%A4.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
+                      서체 라이선스 약관
+                    </a>
+                    을 참고하세요.
                   </p>
                 </div>
                 <div>
