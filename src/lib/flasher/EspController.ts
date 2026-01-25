@@ -50,10 +50,23 @@ export default class EspController {
   }
 
   async disconnect({ skipReset = false }: { skipReset?: boolean } = {}) {
-    try {
-      await this.espLoader.after(skipReset ? "no_reset" : "hard_reset");
-    } catch {
-      // Ignore reset errors
+    if (!skipReset) {
+      try {
+        // RTS 핀을 수동으로 토글해서 하드 리셋 시도
+        const port = this.device as unknown as {
+          setSignals: (signals: { dataTerminalReady: boolean; requestToSend: boolean }) => Promise<void>;
+        };
+        await port.setSignals({ dataTerminalReady: false, requestToSend: true });
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        await port.setSignals({ dataTerminalReady: false, requestToSend: false });
+      } catch {
+        // 시그널 제어 실패 시 기존 방식으로 폴백
+        try {
+          await this.espLoader.after("hard_reset");
+        } catch {
+          // Ignore reset errors
+        }
+      }
     }
     try {
       await this.espLoader.transport.disconnect();
