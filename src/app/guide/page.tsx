@@ -271,11 +271,33 @@ export default function GuidePage() {
                       3.2 파일 탐색기
                     </SectionLink>
                     <p className="text-gray-600 mb-2">
-                      폴더 및 파일 브라우저 역할을 합니다.
+                      파일 탐색기는 두 개의 탭으로 구성되어 있습니다:
+                    </p>
+
+                    <h4 className="text-lg font-medium text-gray-700 mt-3 mb-2">
+                      Recent (최근 읽기)
+                    </h4>
+                    <p className="text-gray-600 mb-2">
+                      최근에 열었던 책 목록을 표시합니다. 빠르게 이전에 읽던 책으로
+                      돌아갈 수 있습니다.
+                    </p>
+
+                    <h4 className="text-lg font-medium text-gray-700 mt-3 mb-2">
+                      Files (파일 브라우저)
+                    </h4>
+                    <p className="text-gray-600 mb-2">
+                      SD 카드의 폴더 및 파일을 탐색합니다.
+                    </p>
+
+                    <p className="text-gray-600 mt-3 mb-2">
+                      <strong>조작 방법:</strong>
                     </p>
                     <ul className="list-disc list-inside text-gray-600 space-y-1">
                       <li>
-                        <strong>목록 탐색:</strong> 왼쪽/오른쪽 (또는 볼륨
+                        <strong>탭 전환:</strong> 좌/우 버튼으로 Recent와 Files 탭 간 이동
+                      </li>
+                      <li>
+                        <strong>목록 탐색:</strong> 위/아래 (또는 볼륨
                         업/다운) 버튼으로 이동
                       </li>
                       <li>
@@ -332,16 +354,21 @@ export default function GuidePage() {
                     >
                       3.5 설정
                     </SectionLink>
-                    <p className="text-gray-600 mb-2">
-                      기기 동작을 설정할 수 있습니다:
+                    <p className="text-gray-600 mb-4">
+                      기기 동작을 설정할 수 있습니다. 설정은 4개 카테고리로
+                      구분되어 있습니다:
                     </p>
-                    <ul className="list-disc list-inside text-gray-600 space-y-1">
+
+                    <h4 className="text-lg font-medium text-gray-700 mt-4 mb-2">
+                      디스플레이
+                    </h4>
+                    <ul className="list-disc list-inside text-gray-600 space-y-1 mb-4">
                       <li>
                         <strong>절전 화면 이미지:</strong> 다크(기본값), 라이트,
                         사용자 정의, 커버, 없음 중 선택
                       </li>
                       <li>
-                        <strong>절전 화면 커버 모드:</strong> 자르기, 맞춤 중
+                        <strong>절전 화면 커버 모드:</strong> 맞춤, 자르기 중
                         선택
                       </li>
                       <li>
@@ -353,53 +380,15 @@ export default function GuidePage() {
                         중 선택
                       </li>
                       <li>
-                        <strong>문단 간격 추가:</strong> 켜면 단락 사이에 공백
-                        추가, 끄면 첫 줄 들여쓰기
-                      </li>
-                      <li>
-                        <strong>텍스트 안티엘리어싱:</strong> ON/OFF 선택
-                      </li>
-                      <li>
-                        <strong>전원 버튼 짧게 누르기:</strong> 무시, 절전,
-                        페이지 넘기기 선택
-                      </li>
-                      <li>
-                        <strong>읽기 방향:</strong> 세로 (기본값), 가로
-                        시계방향, 반전, 가로 반시계방향 중 선택
-                      </li>
-                      <li>
-                        <strong>앞면 버튼 레이아웃:</strong> 세 가지 배치 옵션
-                        중 선택
-                      </li>
-                      <li>
-                        <strong>측면 버튼 레이아웃:</strong> 볼륨 버튼의
-                        이전/다음 순서 변경 (읽기 시에만 적용)
-                      </li>
-                      <li>
-                        <strong>길게 누르면 챕터 건너뛰기:</strong> ON/OFF 선택
-                      </li>
-                      <li>
-                        <strong>줄 간격:</strong> 좁게, 보통, 넓게 중 선택
-                      </li>
-                      <li>
-                        <strong>화면 여백:</strong> 5, 10, 15,...,40 중 선택
-                      </li>
-                      <li>
-                        <strong>문단 정렬:</strong> 양쪽 정렬(기본값), 왼쪽,
-                        가운데, 오른쪽 중 선택
-                      </li>
-                      <li>
-                        <strong>문자 단위 줄바꿈:</strong> 단어 단위가 아닌 글자
-                        단위로 줄바꿈 (양쪽 정렬 시 단어 간격 균등 유지)
-                      </li>
-                      <li>
-                        <strong>절전 시간:</strong> 비활성 상태 후 자동 슬립까지
-                        시간 설정
-                      </li>
-                      <li>
                         <strong>새로고침 주기:</strong> 고스팅 감소를 위한 전체
-                        새로고침 주기 설정
+                        새로고침 주기 설정 (1, 5, 10, 15, 30 페이지)
                       </li>
+                    </ul>
+
+                    <h4 className="text-lg font-medium text-gray-700 mt-4 mb-2">
+                      리더
+                    </h4>
+                    <ul className="list-disc list-inside text-gray-600 space-y-1 mb-4">
                       <li>
                         <strong>글꼴 설정:</strong> EPUB/TXT 리더에서 사용할
                         커스텀 폰트 선택 (자세한 내용은{" "}
@@ -419,8 +408,80 @@ export default function GuidePage() {
                         섹션 참조)
                       </li>
                       <li>
+                        <strong>줄 간격:</strong> 좁게, 보통, 넓게 중 선택
+                      </li>
+                      <li>
+                        <strong>화면 여백:</strong> 5, 10, 15,...,40 중 선택
+                      </li>
+                      <li>
+                        <strong>문단 정렬:</strong> 양쪽 정렬(기본값), 왼쪽,
+                        가운데, 오른쪽 중 선택
+                      </li>
+                      <li>
+                        <strong>하이픈 처리:</strong> 영어 등 단어 하이픈
+                        분리 ON/OFF 선택
+                      </li>
+                      <li>
+                        <strong>읽기 방향:</strong> 세로 (기본값), 가로
+                        시계방향, 반전, 가로 반시계방향 중 선택
+                      </li>
+                      <li>
+                        <strong>문단 간격 추가:</strong> 켜면 단락 사이에 공백
+                        추가
+                      </li>
+                      <li>
+                        <strong>첫 줄 들여쓰기:</strong> 문단 첫 줄 들여쓰기
+                        ON/OFF 선택 (문단 간격과 독립적으로 설정 가능)
+                      </li>
+                      <li>
+                        <strong>문자 단위 줄바꿈:</strong> 단어 단위가 아닌 글자
+                        단위로 줄바꿈 (양쪽 정렬 시 단어 간격 균등 유지)
+                      </li>
+                      <li>
+                        <strong>텍스트 안티앨리어싱:</strong> ON/OFF 선택
+                      </li>
+                    </ul>
+
+                    <h4 className="text-lg font-medium text-gray-700 mt-4 mb-2">
+                      컨트롤
+                    </h4>
+                    <ul className="list-disc list-inside text-gray-600 space-y-1 mb-4">
+                      <li>
+                        <strong>앞면 버튼 레이아웃:</strong> 세 가지 배치 옵션
+                        중 선택
+                      </li>
+                      <li>
+                        <strong>측면 버튼 레이아웃 (리더기):</strong> 볼륨 버튼의
+                        이전/다음 순서 변경 (읽기 시에만 적용)
+                      </li>
+                      <li>
+                        <strong>길게 누르면 챕터 건너뛰기:</strong> ON/OFF 선택
+                      </li>
+                      <li>
+                        <strong>전원 버튼 짧게 누르기:</strong> 무시, 절전,
+                        페이지 넘기기 선택
+                      </li>
+                    </ul>
+
+                    <h4 className="text-lg font-medium text-gray-700 mt-4 mb-2">
+                      시스템
+                    </h4>
+                    <ul className="list-disc list-inside text-gray-600 space-y-1">
+                      <li>
+                        <strong>절전 시간:</strong> 비활성 상태 후 자동 슬립까지
+                        시간 설정 (1분, 5분, 10분, 15분, 30분)
+                      </li>
+                      <li>
+                        <strong>KOReader 동기화:</strong> KOReader 서버와의
+                        읽기 위치 동기화 설정
+                      </li>
+                      <li>
                         <strong>Calibre 설정:</strong> Calibre Web 서버와의 통합
                         설정
+                      </li>
+                      <li>
+                        <strong>캐시 지우기:</strong> 렌더링 캐시 및 임시 파일
+                        삭제
                       </li>
                       <li>
                         <strong>업데이트 확인:</strong> WiFi를 통해 펌웨어
@@ -564,7 +625,7 @@ export default function GuidePage() {
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
                       <p className="text-blue-800 text-sm">
                         <strong>참고:</strong> 기본 폰트는{" "}
-                        <strong>을유1945</strong>로, 한국어 읽기에 최적화되어
+                        <strong>KoPub 바탕</strong>으로, 한국어 읽기에 최적화되어
                         있습니다.
                       </p>
                     </div>
@@ -750,7 +811,7 @@ export default function GuidePage() {
                 </p>
 
                 <ol className="list-decimal list-inside text-gray-600 space-y-2">
-                  <li>왼쪽/오른쪽 (또는 이전/다운)으로 원하는 챕터 선택</li>
+                  <li>위/아래 (또는 볼륨 업/다운)으로 원하는 챕터 선택</li>
                   <li>
                     <strong>확인</strong>을 눌러 해당 챕터로 이동
                   </li>
@@ -761,6 +822,24 @@ export default function GuidePage() {
                     </em>
                   </li>
                 </ol>
+
+                <h4 className="text-lg font-medium text-gray-700 mt-6 mb-2">
+                  KOReader 동기화
+                </h4>
+                <p className="text-gray-600 mb-2">
+                  설정에서 KOReader 동기화가 활성화된 경우, 챕터 선택 화면에
+                  추가 옵션이 표시됩니다:
+                </p>
+                <ul className="list-disc list-inside text-gray-600 space-y-1">
+                  <li>
+                    <strong>Sync Progress:</strong> KOReader 서버에서 동기화된
+                    읽기 위치로 이동
+                  </li>
+                  <li>
+                    동기화된 챕터 이름이 함께 표시되어 다른 기기에서 읽던
+                    위치를 쉽게 확인할 수 있습니다
+                  </li>
+                </ul>
               </div>
 
               {/* Limitations */}

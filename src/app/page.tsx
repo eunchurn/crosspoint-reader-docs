@@ -19,7 +19,7 @@ const features = [
   },
   {
     title: "커스텀 폰트 지원",
-    description: "사용자 정의 폰트를 추가할 수 있으며, 기본 을유1945 폰트로 한글, 한자, 특수문자를 완벽 지원합니다.",
+    description: "사용자 정의 폰트를 추가할 수 있으며, 기본 KoPub 바탕 폰트로 한글, 한자, 특수문자를 완벽 지원합니다.",
     icon: (
       <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" />
