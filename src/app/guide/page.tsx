@@ -1153,6 +1153,15 @@ export default function GuidePage() {
                     >
                       GitHub Discussions
                     </a>
+                    에서, 한국어 펌웨어 관련 논의는{" "}
+                    <a
+                      href="https://github.com/eunchurn/crosspoint-reader-ko/discussions"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 underline"
+                    >
+                      한국어 펌웨어 Discussions
+                    </a>
                     에서 공유해주세요.
                   </p>
                 </div>
