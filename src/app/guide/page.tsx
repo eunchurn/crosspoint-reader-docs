@@ -863,7 +863,16 @@ export default function GuidePage() {
                 <ul className="list-disc list-inside text-gray-600 space-y-2">
                   <li>
                     <strong>이미지:</strong> 전자책 내 임베디드 이미지가
-                    렌더링되지 않습니다
+                    렌더링되지 않습니다 (
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/11"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      토론 참여
+                    </a>
+                    )
                   </li>
                 </ul>
               </div>
