@@ -857,24 +857,305 @@ export default function GuidePage() {
                 <p className="text-gray-600 mb-4">
                   이 펌웨어는 현재 활발히 개발 중입니다. 다음 기능은{" "}
                   <strong>아직 지원되지 않지만</strong> 향후 업데이트에서 추가될
-                  예정입니다:
+                  예정입니다. 각 항목의 링크를 통해 토론에 참여할 수 있습니다:
                 </p>
 
-                <ul className="list-disc list-inside text-gray-600 space-y-2">
+                <h4 className="text-lg font-medium text-gray-700 mt-4 mb-2">
+                  렌더링
+                </h4>
+                <ul className="list-disc list-inside text-gray-600 space-y-2 mb-4">
                   <li>
-                    <strong>이미지:</strong> 전자책 내 임베디드 이미지가
-                    렌더링되지 않습니다 (
                     <a
                       href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/11"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-600 hover:text-blue-800"
                     >
-                      토론 참여
+                      이미지 지원
+                    </a>{" "}
+                    - 전자책 내 임베디드 이미지 렌더링
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/243"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      다크 모드
+                    </a>{" "}
+                    - 화면 반전 읽기 모드
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/479"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      안티앨리어싱 파라미터 및 작은 폰트
                     </a>
-                    )
                   </li>
                 </ul>
+
+                <h4 className="text-lg font-medium text-gray-700 mt-4 mb-2">
+                  탐색 및 UI
+                </h4>
+                <ul className="list-disc list-inside text-gray-600 space-y-2 mb-4">
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/520"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      페이지 이동
+                    </a>{" "}
+                    - 특정 페이지로 바로 이동
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/456"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      책 내 검색
+                    </a>{" "}
+                    - 단어/문장 검색 기능
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/239"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      북마크
+                    </a>{" "}
+                    - 책갈피 추가/관리
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/416"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      텍스트 하이라이팅
+                    </a>{" "}
+                    - 간단한 텍스트 강조 기능
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/538"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      인라인 각주
+                    </a>{" "}
+                    - 팝업 형태의 각주 표시
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/301"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      상태 표시줄 옵션
+                    </a>{" "}
+                    - 시간 표시 등 추가 옵션
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/238"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      파일 검색/필터
+                    </a>{" "}
+                    - 라이브러리 내 책 검색
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/508"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      메타데이터 기반 브라우저
+                    </a>{" "}
+                    - 저자/제목별 정렬
+                  </li>
+                </ul>
+
+                <h4 className="text-lg font-medium text-gray-700 mt-4 mb-2">
+                  자동화 및 통계
+                </h4>
+                <ul className="list-disc list-inside text-gray-600 space-y-2 mb-4">
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/549"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      자동 페이지 넘김
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/226"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      읽기 통계
+                    </a>{" "}
+                    - 읽기 시간/속도 추적
+                  </li>
+                </ul>
+
+                <h4 className="text-lg font-medium text-gray-700 mt-4 mb-2">
+                  외부 서비스 연동
+                </h4>
+                <ul className="list-disc list-inside text-gray-600 space-y-2 mb-4">
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/257"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      Readwise/Instapaper 동기화
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/517"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      Goodreads 연동
+                    </a>
+                  </li>
+                </ul>
+
+                <h4 className="text-lg font-medium text-gray-700 mt-4 mb-2">
+                  다국어 지원
+                </h4>
+                <ul className="list-disc list-inside text-gray-600 space-y-2 mb-4">
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/284"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      태국어 지원
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/494"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      아랍어 지원
+                    </a>{" "}
+                    - RTL 텍스트 렌더링
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/276"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      베트남어 지원
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/409"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      UI 다국어 지원
+                    </a>{" "}
+                    - 메뉴 언어 선택
+                  </li>
+                </ul>
+
+                <h4 className="text-lg font-medium text-gray-700 mt-4 mb-2">
+                  하드웨어 및 시스템
+                </h4>
+                <ul className="list-disc list-inside text-gray-600 space-y-2 mb-4">
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/117"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      블루투스 페이지 터너
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/221"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      잠금 화면
+                    </a>{" "}
+                    - 간단한 비밀번호 잠금
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/211"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      부팅 동작 선택
+                    </a>{" "}
+                    - 마지막 책으로 바로 시작
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/359"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      설정 백업/복원
+                    </a>{" "}
+                    - 웹서버를 통한 설정 백업
+                  </li>
+                </ul>
+
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
+                  <p className="text-blue-800 text-sm">
+                    <strong>참여하기:</strong> 새로운 기능 제안이나 의견은{" "}
+                    <a
+                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 underline"
+                    >
+                      GitHub Discussions
+                    </a>
+                    에서 공유해주세요.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
