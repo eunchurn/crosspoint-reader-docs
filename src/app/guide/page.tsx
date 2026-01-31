@@ -372,8 +372,12 @@ export default function GuidePage() {
                         선택
                       </li>
                       <li>
-                        <strong>상태 표시줄:</strong> 없음, 진행 없음, 전체 중
+                        <strong>절전 화면 커버 필터:</strong> 없음, 대비, 반전 중
                         선택
+                      </li>
+                      <li>
+                        <strong>상태 표시줄:</strong> 없음, 진행 없음, 전체 w/ %,
+                        전체 w/ 진행바, 진행바만 중 선택
                       </li>
                       <li>
                         <strong>배터리 % 숨기기:</strong> 안 함, 리더에서, 항상
@@ -476,8 +480,8 @@ export default function GuidePage() {
                         읽기 위치 동기화 설정
                       </li>
                       <li>
-                        <strong>Calibre 설정:</strong> Calibre Web 서버와의 통합
-                        설정
+                        <strong>OPDS 브라우저:</strong> OPDS 카탈로그를 통한
+                        전자책 다운로드
                       </li>
                       <li>
                         <strong>캐시 지우기:</strong> 렌더링 캐시 및 임시 파일
