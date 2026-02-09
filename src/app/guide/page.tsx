@@ -347,6 +347,45 @@ export default function GuidePage() {
                     </p>
                   </div>
 
+                  <div id="calibre-wireless" className="scroll-mt-24">
+                    <SectionLink
+                      id="calibre-wireless"
+                      className="text-xl font-semibold text-gray-800 mb-2"
+                    >
+                      3.4.1 Calibre 무선 전송
+                    </SectionLink>
+                    <p className="text-gray-600 mb-4">
+                      CrossPoint는 Calibre 디바이스 플러그인을 사용한 무선 전송을
+                      지원합니다.
+                    </p>
+                    <ol className="list-decimal list-inside text-gray-600 space-y-2">
+                      <li>
+                        Calibre에 플러그인 설치:{" "}
+                        <a
+                          href="https://github.com/crosspoint-reader/calibre-plugins/releases"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800"
+                        >
+                          https://github.com/crosspoint-reader/calibre-plugins/releases
+                        </a>{" "}
+                        에서 최신 crosspoint_reader 플러그인 zip 파일을 다운로드한
+                        후, Calibre &rarr; 환경 설정 &rarr; 플러그인 &rarr;
+                        파일에서 플러그인 불러오기 &rarr; zip 파일 선택
+                      </li>
+                      <li>
+                        기기에서: 파일 전송 &rarr; Calibre 연결 &rarr; 네트워크
+                        참가
+                      </li>
+                      <li>
+                        컴퓨터와 기기가 같은 WiFi 네트워크에 있는지 확인
+                      </li>
+                      <li>
+                        Calibre에서 &quot;기기로 보내기&quot;를 클릭하여 전송
+                      </li>
+                    </ol>
+                  </div>
+
                   <div id="settings" className="scroll-mt-24">
                     <SectionLink
                       id="settings"
@@ -365,7 +404,7 @@ export default function GuidePage() {
                     <ul className="list-disc list-inside text-gray-600 space-y-1 mb-4">
                       <li>
                         <strong>절전 화면 이미지:</strong> 다크(기본값), 라이트,
-                        사용자 정의, 커버, 없음 중 선택
+                        사용자 정의, 커버, 없음, 커버 + 사용자 정의 중 선택
                       </li>
                       <li>
                         <strong>절전 화면 커버 모드:</strong> 맞춤, 자르기 중
@@ -377,7 +416,7 @@ export default function GuidePage() {
                       </li>
                       <li>
                         <strong>상태 표시줄:</strong> 없음, 진행 없음, 전체 w/ %,
-                        전체 w/ 진행바, 진행바만 중 선택
+                        전체 w/ 책 진행바, 책 진행바만, 전체 w/ 챕터 바 중 선택
                       </li>
                       <li>
                         <strong>배터리 % 숨기기:</strong> 안 함, 리더에서, 항상
@@ -386,6 +425,10 @@ export default function GuidePage() {
                       <li>
                         <strong>새로고침 주기:</strong> 고스팅 감소를 위한 전체
                         새로고침 주기 설정 (1, 5, 10, 15, 30 페이지)
+                      </li>
+                      <li>
+                        <strong>햇빛 번짐 보정:</strong> 흰색 X4 모델의 직사광선
+                        번짐 문제 소프트웨어 보정 OFF/ON 선택
                       </li>
                     </ul>
 
@@ -410,6 +453,10 @@ export default function GuidePage() {
                           커스텀 폰트
                         </Link>{" "}
                         섹션 참조)
+                      </li>
+                      <li>
+                        <strong>글꼴 크기:</strong> 작게, 보통, 크게, 매우 크게
+                        중 선택
                       </li>
                       <li>
                         <strong>줄 간격:</strong> 좁게, 보통, 넓게 중 선택
@@ -451,7 +498,7 @@ export default function GuidePage() {
                     </h4>
                     <ul className="list-disc list-inside text-gray-600 space-y-1 mb-4">
                       <li>
-                        <strong>앞면 버튼 레이아웃:</strong> 세 가지 배치 옵션
+                        <strong>앞면 버튼 레이아웃:</strong> 네 가지 배치 옵션
                         중 선택
                       </li>
                       <li>
@@ -459,7 +506,8 @@ export default function GuidePage() {
                         이전/다음 순서 변경 (읽기 시에만 적용)
                       </li>
                       <li>
-                        <strong>길게 누르면 챕터 건너뛰기:</strong> ON/OFF 선택
+                        <strong>길게 누르면 챕터 건너뛰기:</strong>{" "}
+                        챕터 건너뛰기(기본값), 페이지 스크롤 중 선택
                       </li>
                       <li>
                         <strong>전원 버튼 짧게 누르기:</strong> 무시, 절전,
@@ -597,6 +645,10 @@ export default function GuidePage() {
                         SD 카드의{" "}
                         <code className="bg-gray-100 px-1 rounded">
                           /.crosspoint/fonts/
+                        </code>{" "}
+                        또는 루트의{" "}
+                        <code className="bg-gray-100 px-1 rounded">
+                          /fonts/
                         </code>{" "}
                         폴더에 폰트 파일을 복사합니다.
                       </li>
@@ -795,6 +847,41 @@ export default function GuidePage() {
                     열기
                   </li>
                 </ul>
+
+                <h3
+                  id="supported-languages"
+                  className="text-xl font-semibold text-gray-800 mb-4 mt-6 scroll-mt-24"
+                >
+                  지원 언어
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  CrossPoint는 다음 유니코드 문자 블록을 사용하여 텍스트를
+                  렌더링합니다:
+                </p>
+                <ul className="list-disc list-inside text-gray-600 space-y-2 mb-4">
+                  <li>
+                    <strong>라틴 문자 (기본, 보충, 확장-A):</strong> 영어,
+                    독일어, 프랑스어, 스페인어, 포르투갈어, 이탈리아어,
+                    네덜란드어, 스웨덴어, 노르웨이어, 덴마크어, 핀란드어,
+                    폴란드어, 체코어, 헝가리어, 루마니아어, 슬로바키아어,
+                    슬로베니아어, 터키어 등
+                  </li>
+                  <li>
+                    <strong>키릴 문자 (표준 및 확장):</strong> 러시아어,
+                    우크라이나어, 벨라루스어, 불가리아어, 세르비아어,
+                    마케도니아어, 카자흐어, 키르기스어, 몽골어 등
+                  </li>
+                  <li>
+                    <strong>한국어:</strong> 한국어 펌웨어에서 완전 지원 (커스텀
+                    폰트 포함)
+                  </li>
+                </ul>
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                  <p className="text-yellow-800 text-sm">
+                    <strong>미지원:</strong> 중국어, 일본어, 베트남어, 히브리어,
+                    아랍어, 그리스어, 페르시아어
+                  </p>
+                </div>
               </div>
 
               {/* Chapter Selection */}
@@ -1169,6 +1256,44 @@ export default function GuidePage() {
                     에서 공유해주세요.
                   </p>
                 </div>
+              </div>
+
+              {/* Troubleshooting */}
+              <div
+                id="troubleshooting"
+                className="rounded-2xl border border-gray-200 bg-white p-8 mb-8 scroll-mt-24"
+              >
+                <SectionLink
+                  id="troubleshooting"
+                  className="text-2xl font-bold text-gray-900 mb-6"
+                >
+                  7. 문제 해결 및 부트루프 탈출
+                </SectionLink>
+
+                <p className="text-gray-600 mb-4">
+                  CrossPoint 사용 중 문제나 충돌이 발생하면 이슈 티켓을 작성하고
+                  시리얼 모니터 로그를 첨부해 주세요. 기기를 컴퓨터에 연결하고
+                  시리얼 모니터를 시작하면 로그를 확인할 수 있습니다.{" "}
+                  <a
+                    href="https://www.serialmonitor.org/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800"
+                  >
+                    Serial Monitor
+                  </a>{" "}
+                  또는 다음 명령어를 사용하세요:
+                </p>
+
+                <pre className="bg-gray-900 text-gray-100 rounded-lg p-4 mb-6 overflow-x-auto">
+                  <code>pio device monitor</code>
+                </pre>
+
+                <p className="text-gray-600">
+                  기기가 부트루프에 빠진 경우, 리셋 버튼을 눌렀다 떼고, 설정된
+                  뒤로 버튼과 전원 버튼을 동시에 누른 채로 유지하면 홈 화면으로
+                  부팅됩니다.
+                </p>
               </div>
             </div>
           </div>
