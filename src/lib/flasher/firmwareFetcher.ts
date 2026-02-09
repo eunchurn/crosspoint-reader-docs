@@ -2,8 +2,8 @@ import { getAssetPath } from "@/lib/basePath";
 
 // 공식 펌웨어는 빌드 시 다운로드되어 로컬에 저장됨 (Mixed Content 문제 해결)
 const officialFirmwareFiles = {
-  "3.1.1-EN": "/firmware/english-official-firmware.bin",
-  "3.1.8-CH": "/firmware/chinese-official-firmware.bin",
+  "5.0.3-EN": "/firmware/english-official-firmware.bin",
+  "5.0.3-CH": "/firmware/chinese-official-firmware.bin",
 };
 
 export interface FirmwareVersions {
