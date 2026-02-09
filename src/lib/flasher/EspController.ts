@@ -133,8 +133,8 @@ export default class EspController {
       totalSize: number,
     ) => void,
   ) {
-    const offset = partitionLabel === "app0" ? 0x10000 : 0x650000;
-    return this.espLoader.readFlash(offset, 0x640000, onPacketReceived);
+    const offset = partitionLabel === "app0" ? 0x10000 : 0x690000;
+    return this.espLoader.readFlash(offset, 0x680000, onPacketReceived);
   }
 
   async writeAppPartition(
@@ -146,8 +146,8 @@ export default class EspController {
       total: number,
     ) => void,
   ) {
-    if (data.length > 0x640000) {
-      throw new Error(`Data cannot be larger than 0x640000`);
+    if (data.length > 0x680000) {
+      throw new Error(`Data cannot be larger than 0x680000`);
     }
     if (data.length < 0xf0000) {
       throw new Error(
@@ -155,7 +155,7 @@ export default class EspController {
       );
     }
 
-    const offset = partitionLabel === "app0" ? 0x10000 : 0x650000;
+    const offset = partitionLabel === "app0" ? 0x10000 : 0x690000;
 
     await this.writeData(data, offset, reportProgress);
   }
