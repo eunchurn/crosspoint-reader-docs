@@ -19,6 +19,13 @@ interface FirmwareVersionInfo {
   downloadedAt: string;
 }
 
+interface KoreanVersionEntry {
+  tag_name: string;
+  name: string;
+  published_at: string;
+  filename: string;
+}
+
 const FIRMWARE_SOURCES: FirmwareSource[] = [
   {
     name: "Korean Community",
@@ -147,6 +154,75 @@ async function downloadOfficialFirmware(source: OfficialFirmware): Promise<void>
   }
 }
 
+async function downloadKoreanFirmwareReleases(): Promise<KoreanVersionEntry[]> {
+  console.log("📥 Downloading Korean firmware releases (last 5)...\n");
+  const entries: KoreanVersionEntry[] = [];
+
+  try {
+    const response = await fetch(
+      "https://api.github.com/repos/eunchurn/crosspoint-reader-ko/releases?per_page=5",
+      {
+        headers: {
+          Accept: "application/vnd.github.v3+json",
+          "User-Agent": "crosspoint-reader-docs-build",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch releases: ${response.status}`);
+    }
+
+    const releases = await response.json();
+    const validReleases = releases.filter(
+      (r: any) => !r.draft && !r.prerelease
+    );
+
+    for (const release of validReleases) {
+      const firmwareAsset = release.assets?.find(
+        (asset: any) => asset.name === "firmware.bin"
+      );
+      if (!firmwareAsset) {
+        console.log(`   ⚠️ ${release.tag_name}: firmware.bin not found, skipping`);
+        continue;
+      }
+
+      const safeTag = release.tag_name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      const filename = `korean-firmware-${safeTag}.bin`;
+
+      console.log(`   📥 ${release.tag_name}...`);
+      try {
+        const fwResponse = await fetch(firmwareAsset.browser_download_url, {
+          headers: { "User-Agent": "crosspoint-reader-docs-build" },
+        });
+        if (!fwResponse.ok) throw new Error(`HTTP ${fwResponse.status}`);
+
+        const buffer = await fwResponse.arrayBuffer();
+        writeFileSync(join(PUBLIC_FIRMWARE_DIR, filename), Buffer.from(buffer));
+        console.log(`   ✅ ${filename} (${(buffer.byteLength / 1024).toFixed(1)} KB)`);
+
+        entries.push({
+          tag_name: release.tag_name,
+          name: release.name || release.tag_name,
+          published_at: release.published_at,
+          filename,
+        });
+      } catch (err) {
+        console.error(`   ❌ Failed to download ${release.tag_name}:`, err);
+      }
+    }
+  } catch (error) {
+    console.error("   ❌ Failed to fetch Korean releases:", error);
+  }
+
+  // Save manifest
+  const manifestPath = join(PUBLIC_FIRMWARE_DIR, "korean-versions.json");
+  writeFileSync(manifestPath, JSON.stringify(entries, null, 2));
+  console.log(`\n   📋 Saved korean-versions.json (${entries.length} versions)\n`);
+
+  return entries;
+}
+
 async function main(): Promise<void> {
   console.log("🔧 Downloading firmware files for build...\n");
 
@@ -168,6 +244,9 @@ async function main(): Promise<void> {
     await downloadOfficialFirmware(source);
     console.log("");
   }
+
+  // Download Korean firmware releases (last 5)
+  await downloadKoreanFirmwareReleases();
 
   // Save version info to JSON file
   const versionData: FirmwareVersionInfo = {

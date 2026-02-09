@@ -66,3 +66,31 @@ export async function getKoreanCommunityFirmware() {
   const url = getAssetPath("/firmware/korean-firmware.bin");
   return fetchFirmwareFromUrl(url);
 }
+
+export interface KoreanFirmwareRelease {
+  tag_name: string;
+  name: string;
+  filename: string;
+  published_at: string;
+}
+
+let cachedKoreanReleases: KoreanFirmwareRelease[] | null = null;
+
+export async function getKoreanFirmwareReleases(): Promise<KoreanFirmwareRelease[]> {
+  if (cachedKoreanReleases) return cachedKoreanReleases;
+
+  try {
+    const url = getAssetPath("/firmware/korean-versions.json");
+    const response = await fetch(url);
+    if (!response.ok) return [];
+    cachedKoreanReleases = await response.json();
+    return cachedKoreanReleases!;
+  } catch {
+    return [];
+  }
+}
+
+export async function getKoreanFirmwareByTag(filename: string): Promise<Uint8Array> {
+  const url = getAssetPath(`/firmware/${filename}`);
+  return fetchFirmwareFromUrl(url);
+}

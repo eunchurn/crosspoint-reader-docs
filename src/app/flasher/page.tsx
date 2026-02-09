@@ -9,6 +9,8 @@ import { useEspOperations } from "@/lib/flasher/useEspOperations";
 import {
   getFirmwareVersions,
   FirmwareVersions,
+  getKoreanFirmwareReleases,
+  KoreanFirmwareRelease,
 } from "@/lib/flasher/firmwareFetcher";
 
 export default function FlasherPage() {
@@ -17,9 +19,17 @@ export default function FlasherPage() {
   const appPartitionFileInput = useRef<FileUploadHandle>(null);
   const progressSectionRef = useRef<HTMLElement>(null);
   const [versions, setVersions] = useState<FirmwareVersions | null>(null);
+  const [koreanReleases, setKoreanReleases] = useState<KoreanFirmwareRelease[]>([]);
+  const [selectedKoreanFilename, setSelectedKoreanFilename] = useState<string>("");
 
   useEffect(() => {
     getFirmwareVersions().then(setVersions);
+    getKoreanFirmwareReleases().then((releases) => {
+      setKoreanReleases(releases);
+      if (releases.length > 0) {
+        setSelectedKoreanFilename(releases[0].filename);
+      }
+    });
   }, []);
 
   const isDeviceConnected = stepData.some(
@@ -200,16 +210,49 @@ export default function FlasherPage() {
               </p>
             </div>
             <div className="space-y-4">
-              <button
-                onClick={actions.flashKoreanFirmware}
-                disabled={isRunning}
-                className="w-full px-4 py-3 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                한국어 펌웨어 플래싱 (커뮤니티){" "}
-                {versions?.korean && (
-                  <span className="opacity-75">({versions.korean})</span>
-                )}
-              </button>
+              <div className="rounded-lg border border-blue-200 bg-blue-50 p-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xs font-semibold text-blue-700 uppercase tracking-wide">
+                    한국어 펌웨어 (커뮤니티)
+                  </span>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <div className="relative flex-1">
+                    <select
+                      value={selectedKoreanFilename}
+                      onChange={(e) => setSelectedKoreanFilename(e.target.value)}
+                      disabled={isRunning || koreanReleases.length === 0}
+                      className="w-full appearance-none px-4 py-3 pr-10 text-sm font-medium text-gray-900 bg-white border border-blue-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    >
+                      {koreanReleases.length === 0 ? (
+                        <option value="">버전 로딩 중...</option>
+                      ) : (
+                        koreanReleases.map((release, index) => (
+                          <option key={release.tag_name} value={release.filename}>
+                            {release.tag_name}{index === 0 ? " (최신)" : ""}
+                          </option>
+                        ))
+                      )}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                      <svg className="h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                      </svg>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      if (selectedKoreanFilename) {
+                        actions.flashKoreanFirmwareVersion(selectedKoreanFilename);
+                      }
+                    }}
+                    disabled={isRunning || !selectedKoreanFilename}
+                    className="px-6 py-3 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
+                  >
+                    플래싱
+                  </button>
+                </div>
+              </div>
               <button
                 onClick={actions.flashCrossPointFirmware}
                 disabled={isRunning}

@@ -5,6 +5,7 @@ import {
   getCommunityFirmware,
   getOfficialFirmware,
   getKoreanCommunityFirmware,
+  getKoreanFirmwareByTag,
 } from "./firmwareFetcher";
 import { downloadData } from "./download";
 import { wrapWithWakeLock } from "./wakelock";
@@ -93,6 +94,9 @@ export function useEspOperations() {
     flashRemoteFirmware(() => getCommunityFirmware("CrossPoint"));
   const flashKoreanFirmware = async () =>
     flashRemoteFirmware(() => getKoreanCommunityFirmware());
+
+  const flashKoreanFirmwareVersion = async (filename: string) =>
+    flashRemoteFirmware(() => getKoreanFirmwareByTag(filename));
 
   const flashCustomFirmware = async (getFile: () => File | undefined) => {
     initializeSteps([
@@ -218,6 +222,7 @@ export function useEspOperations() {
       flashChineseFirmware: wrapWithRunning(flashChineseFirmware),
       flashCrossPointFirmware: wrapWithRunning(flashCrossPointFirmware),
       flashKoreanFirmware: wrapWithRunning(flashKoreanFirmware),
+      flashKoreanFirmwareVersion: wrapWithRunning(flashKoreanFirmwareVersion),
       flashCustomFirmware: wrapWithRunning(flashCustomFirmware),
       saveFullFlash: wrapWithRunning(saveFullFlash),
       writeFullFlash: wrapWithRunning(writeFullFlash),
