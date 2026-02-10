@@ -243,7 +243,8 @@ export default function FlasherPage() {
                   <button
                     onClick={() => {
                       if (selectedKoreanFilename) {
-                        actions.flashKoreanFirmwareVersion(selectedKoreanFilename);
+                        const release = koreanReleases.find(r => r.filename === selectedKoreanFilename);
+                        actions.flashKoreanFirmwareVersion(selectedKoreanFilename, release?.tag_name ?? "");
                       }
                     }}
                     disabled={isRunning || !selectedKoreanFilename}

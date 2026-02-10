@@ -6,6 +6,8 @@ import {
   getOfficialFirmware,
   getKoreanCommunityFirmware,
   getKoreanFirmwareByTag,
+  getKoreanPartitions,
+  getKoreanPartitionsByTag,
 } from "./firmwareFetcher";
 import { downloadData } from "./download";
 import { wrapWithWakeLock } from "./wakelock";
@@ -27,15 +29,18 @@ export function useEspOperations() {
 
   const flashRemoteFirmware = async (
     getFirmware: () => Promise<Uint8Array>,
+    getPartitions?: () => Promise<Uint8Array | null>,
   ) => {
-    initializeSteps([
+    const steps = [
       "장치 연결",
       "펌웨어 다운로드",
+      ...(getPartitions ? ["파티션 테이블 업데이트"] : []),
       "otadata 파티션 읽기",
       "앱 파티션 플래싱",
       "otadata 파티션 플래싱",
       "장치 재시작",
-    ]);
+    ];
+    initializeSteps(steps);
 
     const espController = await runStep("장치 연결", async () => {
       const c = await EspController.fromRequestedDevice();
@@ -44,6 +49,21 @@ export function useEspOperations() {
     });
 
     const firmwareFile = await runStep("펌웨어 다운로드", getFirmware);
+
+    // Flash partition table if provided (needed for partition layout migration)
+    if (getPartitions) {
+      await runStep("파티션 테이블 업데이트", async () => {
+        const partitionsFile = await getPartitions();
+        if (partitionsFile) {
+          await espController.writePartitionTable(partitionsFile, (_, p, t) =>
+            updateStepData("파티션 테이블 업데이트", {
+              progress: { current: p, total: t },
+            }),
+          );
+        }
+        // If partitions.bin not available (older release), skip silently
+      });
+    }
 
     const [otaPartition, backupPartitionLabel] = await runStep(
       "otadata 파티션 읽기",
@@ -93,10 +113,16 @@ export function useEspOperations() {
   const flashCrossPointFirmware = async () =>
     flashRemoteFirmware(() => getCommunityFirmware("CrossPoint"));
   const flashKoreanFirmware = async () =>
-    flashRemoteFirmware(() => getKoreanCommunityFirmware());
+    flashRemoteFirmware(
+      () => getKoreanCommunityFirmware(),
+      () => getKoreanPartitions(),
+    );
 
-  const flashKoreanFirmwareVersion = async (filename: string) =>
-    flashRemoteFirmware(() => getKoreanFirmwareByTag(filename));
+  const flashKoreanFirmwareVersion = async (filename: string, tag: string) =>
+    flashRemoteFirmware(
+      () => getKoreanFirmwareByTag(filename),
+      () => getKoreanPartitionsByTag(tag),
+    );
 
   const flashCustomFirmware = async (getFile: () => File | undefined) => {
     initializeSteps([

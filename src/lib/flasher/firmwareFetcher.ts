@@ -67,6 +67,25 @@ export async function getKoreanCommunityFirmware() {
   return fetchFirmwareFromUrl(url);
 }
 
+export async function getKoreanPartitions(): Promise<Uint8Array | null> {
+  try {
+    const url = getAssetPath("/firmware/korean-partitions.bin");
+    return await fetchFirmwareFromUrl(url);
+  } catch {
+    return null;
+  }
+}
+
+export async function getKoreanPartitionsByTag(tag: string): Promise<Uint8Array | null> {
+  try {
+    const safeTag = tag.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const url = getAssetPath(`/firmware/korean-partitions-${safeTag}.bin`);
+    return await fetchFirmwareFromUrl(url);
+  } catch {
+    return null;
+  }
+}
+
 export interface KoreanFirmwareRelease {
   tag_name: string;
   name: string;

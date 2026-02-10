@@ -125,6 +125,17 @@ export default class EspController {
     await this.writeData(partition.data, 0xe000, reportProgress);
   }
 
+  async writePartitionTable(
+    data: Uint8Array,
+    reportProgress?: (
+      fileIndex: number,
+      written: number,
+      total: number,
+    ) => void,
+  ) {
+    await this.writeData(data, 0x8000, reportProgress);
+  }
+
   async readAppPartition(
     partitionLabel: "app0" | "app1",
     onPacketReceived?: (

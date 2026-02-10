@@ -119,6 +119,24 @@ async function downloadFirmware(source: FirmwareSource): Promise<void> {
     console.log(
       `   ✅ Saved to public/firmware/${source.filename} (${(firmwareBuffer.byteLength / 1024).toFixed(1)} KB)`
     );
+
+    // Download partitions.bin if available (needed for partition table migration)
+    const partitionsAsset = releaseData.assets?.find(
+      (asset: { name: string }) => asset.name === "partitions.bin"
+    );
+    if (partitionsAsset) {
+      const partitionsResponse = await fetch(partitionsAsset.browser_download_url, {
+        headers: { "User-Agent": "crosspoint-reader-docs-build" },
+      });
+      if (partitionsResponse.ok) {
+        const partitionsBuffer = await partitionsResponse.arrayBuffer();
+        const partitionsFilename = source.filename.replace("-firmware.bin", "-partitions.bin");
+        writeFileSync(join(PUBLIC_FIRMWARE_DIR, partitionsFilename), Buffer.from(partitionsBuffer));
+        console.log(
+          `   ✅ Saved to public/firmware/${partitionsFilename} (${(partitionsBuffer.byteLength / 1024).toFixed(1)} KB)`
+        );
+      }
+    }
   } catch (error) {
     console.error(`   ❌ Failed to download ${source.name}:`, error);
     throw error;
@@ -200,6 +218,22 @@ async function downloadKoreanFirmwareReleases(): Promise<KoreanVersionEntry[]> {
         const buffer = await fwResponse.arrayBuffer();
         writeFileSync(join(PUBLIC_FIRMWARE_DIR, filename), Buffer.from(buffer));
         console.log(`   ✅ ${filename} (${(buffer.byteLength / 1024).toFixed(1)} KB)`);
+
+        // Also download partitions.bin for this release
+        const partitionsAsset = release.assets?.find(
+          (asset: any) => asset.name === "partitions.bin"
+        );
+        if (partitionsAsset) {
+          const ptResponse = await fetch(partitionsAsset.browser_download_url, {
+            headers: { "User-Agent": "crosspoint-reader-docs-build" },
+          });
+          if (ptResponse.ok) {
+            const ptBuffer = await ptResponse.arrayBuffer();
+            const ptFilename = filename.replace("-firmware-", "-partitions-");
+            writeFileSync(join(PUBLIC_FIRMWARE_DIR, ptFilename), Buffer.from(ptBuffer));
+            console.log(`   ✅ ${ptFilename} (${(ptBuffer.byteLength / 1024).toFixed(1)} KB)`);
+          }
+        }
 
         entries.push({
           tag_name: release.tag_name,
