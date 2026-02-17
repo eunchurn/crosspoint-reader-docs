@@ -58,9 +58,9 @@ const OFFICIAL_FIRMWARE_SOURCES: OfficialFirmware[] = [
   },
   {
     name: "Chinese Official",
-    url: "http://47.122.74.33:5000/api/download/ESP32C3/V5.0.3/V5.0.3-CH-X4-PROD-0207_2.bin",
+    url: "http://47.122.74.33:5000/api/download/ESP32C3/V5.0.6/V5.0.6-CH-X4-PROD-0213.bin",
     filename: "chinese-official-firmware.bin",
-    version: "5.0.3",
+    version: "5.0.6",
   },
 ];
 
