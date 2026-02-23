@@ -340,10 +340,14 @@ export default function GuidePage() {
                     >
                       3.4 파일 업로드 화면
                     </SectionLink>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 mb-2">
                       새 전자책을 기기에 업로드할 수 있습니다. 화면에 들어가면
                       WiFi 선택 대화상자가 표시되고, X4가 웹 서버를 호스팅하기
                       시작합니다.
+                    </p>
+                    <p className="text-gray-600">
+                      웹 브라우저 업로드 외에도 <strong>WebDAV</strong> 프로토콜을
+                      지원하여 파일 관리자에서 직접 파일을 전송할 수 있습니다.
                     </p>
                   </div>
 
@@ -427,6 +431,9 @@ export default function GuidePage() {
                         새로고침 주기 설정 (1, 5, 10, 15, 30 페이지)
                       </li>
                       <li>
+                        <strong>UI 테마:</strong> 클래식, Lyra, Lyra 확장 중 선택
+                      </li>
+                      <li>
                         <strong>햇빛 번짐 보정:</strong> 흰색 X4 모델의 직사광선
                         번짐 문제 소프트웨어 보정 OFF/ON 선택
                       </li>
@@ -455,10 +462,6 @@ export default function GuidePage() {
                         섹션 참조)
                       </li>
                       <li>
-                        <strong>글꼴 크기:</strong> 작게, 보통, 크게, 매우 크게
-                        중 선택
-                      </li>
-                      <li>
                         <strong>줄 간격:</strong> 좁게, 보통, 넓게 중 선택
                       </li>
                       <li>
@@ -466,7 +469,11 @@ export default function GuidePage() {
                       </li>
                       <li>
                         <strong>문단 정렬:</strong> 양쪽 정렬(기본값), 왼쪽,
-                        가운데, 오른쪽 중 선택
+                        가운데, 오른쪽, 책 스타일 중 선택
+                      </li>
+                      <li>
+                        <strong>내장 스타일:</strong> 책에 포함된 CSS 스타일
+                        적용 ON/OFF 선택
                       </li>
                       <li>
                         <strong>하이픈 처리:</strong> 영어 등 단어 하이픈
@@ -498,8 +505,8 @@ export default function GuidePage() {
                     </h4>
                     <ul className="list-disc list-inside text-gray-600 space-y-1 mb-4">
                       <li>
-                        <strong>앞면 버튼 레이아웃:</strong> 네 가지 배치 옵션
-                        중 선택
+                        <strong>앞면 버튼 매핑:</strong> 앞면 4개 버튼의 기능을
+                        자유롭게 재설정 (뒤로, 확인, 이전, 다음 중 선택)
                       </li>
                       <li>
                         <strong>측면 버튼 레이아웃 (리더기):</strong> 볼륨 버튼의
@@ -528,8 +535,12 @@ export default function GuidePage() {
                         읽기 위치 동기화 설정
                       </li>
                       <li>
+                        <strong>WiFi 네트워크:</strong> WiFi 네트워크 선택 및
+                        연결 관리
+                      </li>
+                      <li>
                         <strong>OPDS 브라우저:</strong> OPDS 카탈로그를 통한
-                        전자책 다운로드
+                        전자책 다운로드 (HTTP Basic 인증 지원)
                       </li>
                       <li>
                         <strong>캐시 지우기:</strong> 렌더링 캐시 및 임시 파일
@@ -538,6 +549,10 @@ export default function GuidePage() {
                       <li>
                         <strong>업데이트 확인:</strong> WiFi를 통해 펌웨어
                         업데이트 확인
+                      </li>
+                      <li>
+                        <strong>언어:</strong> UI 언어 선택 (한국어 포함 12개
+                        언어 지원)
                       </li>
                     </ul>
                   </div>
@@ -698,6 +713,37 @@ export default function GuidePage() {
                           한글 폰트
                         </Link>{" "}
                         페이지를 참조하세요.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div id="screenshot" className="scroll-mt-24">
+                    <SectionLink
+                      id="screenshot"
+                      className="text-xl font-semibold text-gray-800 mb-2"
+                    >
+                      3.8 스크린샷
+                    </SectionLink>
+                    <p className="text-gray-600 mb-2">
+                      현재 화면의 스크린샷을 BMP 파일로 저장할 수 있습니다.
+                    </p>
+                    <ul className="list-disc list-inside text-gray-600 space-y-1 mb-4">
+                      <li>
+                        <strong>방법 1:</strong> <strong>전원 + 볼륨 다운</strong>{" "}
+                        버튼을 동시에 누르기
+                      </li>
+                      <li>
+                        <strong>방법 2:</strong> 읽기 화면에서 챕터 메뉴를 열고{" "}
+                        <strong>스크린샷</strong> 옵션 선택
+                      </li>
+                    </ul>
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <p className="text-blue-800 text-sm">
+                        <strong>참고:</strong> 스크린샷은 SD 카드의{" "}
+                        <code className="bg-blue-100 px-1 rounded">
+                          /.crosspoint/screenshots/
+                        </code>{" "}
+                        폴더에 저장됩니다.
                       </p>
                     </div>
                   </div>
@@ -882,6 +928,24 @@ export default function GuidePage() {
                     아랍어, 그리스어, 페르시아어
                   </p>
                 </div>
+
+                <h3
+                  id="epub-images"
+                  className="text-xl font-semibold text-gray-800 mb-4 mt-6 scroll-mt-24"
+                >
+                  EPUB 이미지 지원
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  EPUB 파일에 포함된 JPG 및 PNG 이미지를 렌더링합니다.
+                  이미지는 자동으로 화면 크기에 맞게 조정됩니다.
+                </p>
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                  <p className="text-yellow-800 text-sm">
+                    <strong>참고:</strong> 커버 이미지 등 큰 이미지는 변환에
+                    약 10초가 소요될 수 있습니다. GIF, SVG, WebP 등의 형식은
+                    아직 지원되지 않습니다.
+                  </p>
+                </div>
               </div>
 
               {/* Chapter Selection */}
@@ -955,17 +1019,6 @@ export default function GuidePage() {
                   렌더링
                 </h4>
                 <ul className="list-disc list-inside text-gray-600 space-y-2 mb-4">
-                  <li>
-                    <a
-                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/11"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800"
-                    >
-                      이미지 지원
-                    </a>{" "}
-                    - 전자책 내 임베디드 이미지 렌더링
-                  </li>
                   <li>
                     <a
                       href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/243"
@@ -1171,17 +1224,6 @@ export default function GuidePage() {
                       베트남어 지원
                     </a>
                   </li>
-                  <li>
-                    <a
-                      href="https://github.com/crosspoint-reader/crosspoint-reader/discussions/409"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800"
-                    >
-                      UI 다국어 지원
-                    </a>{" "}
-                    - 메뉴 언어 선택
-                  </li>
                 </ul>
 
                 <h4 className="text-lg font-medium text-gray-700 mt-4 mb-2">
@@ -1289,11 +1331,23 @@ export default function GuidePage() {
                   <code>pio device monitor</code>
                 </pre>
 
-                <p className="text-gray-600">
+                <p className="text-gray-600 mb-6">
                   기기가 부트루프에 빠진 경우, 리셋 버튼을 눌렀다 떼고, 설정된
                   뒤로 버튼과 전원 버튼을 동시에 누른 채로 유지하면 홈 화면으로
                   부팅됩니다.
                 </p>
+
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <p className="text-blue-800 text-sm">
+                    <strong>팁:</strong> 책이 제대로 렌더링되지 않거나 이상한
+                    동작이 발생하면, SD 카드의{" "}
+                    <code className="bg-blue-100 px-1 rounded">
+                      .crosspoint
+                    </code>{" "}
+                    디렉토리를 삭제하여 캐시를 초기화해 보세요. 설정과 읽기
+                    위치는 유지되지만 렌더링 캐시가 재생성됩니다.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

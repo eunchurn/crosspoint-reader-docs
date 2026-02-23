@@ -147,10 +147,10 @@ export default async function InstallPage() {
                     <h3 className="font-semibold text-gray-900">펌웨어 적용</h3>
                   </div>
                   <div className="ml-12">
-                    <p className="text-gray-600">플래시가 완료되면:</p>
+                    <p className="text-gray-600">플래시가 완료되면 자동으로 재부팅됩니다. 만약 멈춰있다면:</p>
                     <ol className="list-decimal list-inside text-gray-600 mt-2 space-y-1">
                       <li>
-                        기기의 <strong>reset</strong> 버튼을 한 번 누릅니다
+                        기기의 <strong>Reset</strong> 버튼을 한 번 누릅니다
                       </li>
                       <li>
                         <strong>전원 버튼</strong>을 1초 이상 눌러 부팅합니다
@@ -364,8 +364,19 @@ export default async function InstallPage() {
                 </h2>
                 <p className="text-gray-600 mb-6">
                   원래 Xteink 공식 펌웨어로 되돌리려면 다음 방법 중 하나를
-                  사용하세요:
+                  사용하세요. 스토어 펌웨어로 롤백 시 최신 공식 펌웨어가 적용됩니다.
                 </p>
+
+                <div className="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
+                  <div className="flex gap-2">
+                    <svg className="h-5 w-5 text-blue-600 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                    </svg>
+                    <p className="text-sm text-blue-800">
+                      CrossPoint 펌웨어와 스토어 펌웨어 간 전환 시 모든 설정(WiFi, 읽기 설정 등)은 변경되지 않고 그대로 유지됩니다.
+                    </p>
+                  </div>
+                </div>
 
                 <div className="space-y-4">
                   <div className="bg-gray-50 rounded-lg p-4">

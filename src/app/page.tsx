@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { BootScreen } from "@/components/BootScreen";
 import { CROSSPOINT_VERSION } from "@/constants/version";
-import { getContributors, type Contributor } from "@/lib/github";
+import { getContributors, getLatestRelease } from "@/lib/github";
 import { getAssetPath } from "@/lib/basePath";
 
 const features = [
@@ -66,7 +66,18 @@ const features = [
 ];
 
 export default async function Home() {
-  const contributors = await getContributors();
+  const [contributors, latestRelease] = await Promise.all([
+    getContributors(),
+    getLatestRelease(),
+  ]);
+
+  const publishedDate = latestRelease?.published_at
+    ? new Date(latestRelease.published_at).toLocaleDateString("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : null;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -83,9 +94,25 @@ export default async function Home() {
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                   <span className="text-blue-600">CrossPoint</span> Reader
                 </h1>
-                <p className="mt-4 text-xl text-gray-600">
-                  한국어 펌웨어 <span className="inline-flex items-center rounded-md bg-blue-100 px-2 py-1 text-sm font-medium text-blue-700">v{CROSSPOINT_VERSION}</span>
-                </p>
+                <div className="mt-4 flex flex-col sm:flex-row items-center lg:items-start gap-3">
+                  <p className="text-xl text-gray-600">
+                    한국어 펌웨어 <span className="inline-flex items-center rounded-md bg-blue-100 px-2 py-1 text-sm font-medium text-blue-700">v{CROSSPOINT_VERSION}</span>
+                  </p>
+                  {publishedDate && (
+                    <span className="text-sm text-gray-400">{publishedDate} 배포</span>
+                  )}
+                </div>
+                <div className="mt-2">
+                  <Link
+                    href="/releases"
+                    className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
+                  >
+                    What&apos;s New
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                  </Link>
+                </div>
                 <p className="mt-6 max-w-2xl text-lg text-gray-500">
                   Xteink X4 전자잉크 리더를 위한 완전한 오픈소스 펌웨어입니다.
                   <br />
@@ -195,7 +222,7 @@ export default async function Home() {
                 </div>
                 <h3 className="mt-6 text-xl font-semibold text-white">플래시 완료</h3>
                 <p className="mt-2 text-gray-400">
-                  완료 후 Reset 버튼을 누르고 전원 버튼을 1초 이상 눌러 부팅합니다.
+                  플래시가 완료되면 자동으로 재부팅됩니다. 만약 멈춰있다면 Reset 버튼을 누르고 전원 버튼을 1초 이상 눌러 부팅합니다.
                 </p>
               </div>
             </div>
@@ -235,7 +262,7 @@ export default async function Home() {
             <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-lg">
               {/* GitHub Repository Embed Card */}
               <a
-                href="https://github.com/daveallie/crosspoint-reader"
+                href="https://github.com/crosspoint-reader/crosspoint-reader"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block rounded-xl border border-gray-200 bg-white hover:border-gray-300 hover:shadow-md transition-all overflow-hidden"
@@ -251,7 +278,7 @@ export default async function Home() {
                       <span>github.com</span>
                     </div>
                     <h3 className="text-lg font-semibold text-blue-600 hover:underline">
-                      daveallie/crosspoint-reader
+                      crosspoint-reader/crosspoint-reader
                     </h3>
                     <p className="mt-1 text-sm text-gray-600 line-clamp-2">
                       Open-source firmware for the Xteink X4 e-ink reader. Supports EPUB reading with WiFi file upload.
@@ -390,7 +417,7 @@ export default async function Home() {
                   </svg>
                 </div>
                 <h3 className="mt-4 text-lg font-semibold text-gray-900 group-hover:text-blue-600">
-                  웹 플래셔
+                  공식 웹 플래셔
                 </h3>
                 <p className="mt-2 text-sm text-gray-500">
                   웹 브라우저에서 바로 펌웨어를 설치하세요.
@@ -472,6 +499,32 @@ export default async function Home() {
                 </h3>
                 <p className="mt-2 text-sm text-gray-500">
                   EPUB 파일 최적화를 위한 Calibre 플러그인입니다.
+                </p>
+                <span className="mt-3 inline-flex items-center text-sm text-amber-600">
+                  GitHub
+                  <svg className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                  </svg>
+                </span>
+              </a>
+
+              {/* Calibre Plugins */}
+              <a
+                href="https://github.com/crosspoint-reader/calibre-plugins"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-lg hover:border-amber-300 transition-all"
+              >
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-100 text-amber-600 group-hover:bg-amber-600 group-hover:text-white transition-colors">
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v2.25A2.25 2.25 0 006 10.5zm0 9.75h2.25A2.25 2.25 0 0010.5 18v-2.25a2.25 2.25 0 00-2.25-2.25H6a2.25 2.25 0 00-2.25 2.25V18A2.25 2.25 0 006 20.25zm9.75-9.75H18a2.25 2.25 0 002.25-2.25V6A2.25 2.25 0 0018 3.75h-2.25A2.25 2.25 0 0013.5 6v2.25a2.25 2.25 0 002.25 2.25z" />
+                  </svg>
+                </div>
+                <h3 className="mt-4 text-lg font-semibold text-gray-900 group-hover:text-amber-600">
+                  Calibre Plugins
+                </h3>
+                <p className="mt-2 text-sm text-gray-500">
+                  WiFi를 통해 Calibre에서 CrossPoint Reader로 EPUB 파일을 전송하는 플러그인입니다.
                 </p>
                 <span className="mt-3 inline-flex items-center text-sm text-amber-600">
                   GitHub

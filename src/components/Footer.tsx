@@ -91,7 +91,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="https://github.com/daveallie/crosspoint-reader"
+                  href="https://github.com/crosspoint-reader/crosspoint-reader"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-blue-400 transition-colors"
@@ -137,6 +137,16 @@ export default function Footer() {
                   className="hover:text-blue-400 transition-colors"
                 >
                   Calibre Workflow
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/crosspoint-reader/calibre-plugins"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-blue-400 transition-colors"
+                >
+                  Calibre Plugins
                 </a>
               </li>
               <li>

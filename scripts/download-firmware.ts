@@ -35,7 +35,7 @@ const FIRMWARE_SOURCES: FirmwareSource[] = [
   },
   {
     name: "CrossPoint Community",
-    url: "https://api.github.com/repos/daveallie/crosspoint-reader/releases/latest",
+    url: "https://api.github.com/repos/crosspoint-reader/crosspoint-reader/releases/latest",
     filename: "crosspoint-firmware.bin",
     key: "crosspoint",
   },

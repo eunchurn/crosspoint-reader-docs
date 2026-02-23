@@ -131,7 +131,7 @@ export async function getLatestRelease(): Promise<LatestRelease | null> {
 export async function getContributors(): Promise<Contributor[]> {
   try {
     const response = await fetch(
-      "https://api.github.com/repos/daveallie/crosspoint-reader/contributors",
+      "https://api.github.com/repos/crosspoint-reader/crosspoint-reader/contributors",
       {
         headers: {
           Accept: "application/vnd.github.v3+json",
