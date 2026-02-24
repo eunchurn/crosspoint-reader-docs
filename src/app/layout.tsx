@@ -52,20 +52,13 @@ export const metadata: Metadata = {
     siteName: siteName,
     locale: "ko_KR",
     type: "website",
-    images: [
-      {
-        url: "/opengraph.png",
-        width: 1200,
-        height: 630,
-        alt: "CrossPoint Reader - Xteink X4 한국어 펌웨어",
-      },
-    ],
+    images: ["/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
     title: siteName,
     description: siteDescription,
-    images: ["/opengraph.png"],
+    images: ["/opengraph-image"],
     creator: "@eunchurn",
   },
   icons: {
