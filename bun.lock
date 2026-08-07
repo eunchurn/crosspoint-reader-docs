@@ -1,11 +1,12 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "crosspoint-reader-docs",
       "dependencies": {
         "crc": "^4.3.2",
-        "esptool-js": "^0.5.7",
+        "esptool-js": "^0.6.0",
         "highlight.js": "^11.11.1",
         "next": "^16.1.3",
         "react": "^19.2.3",
@@ -479,7 +480,7 @@
 
     "espree": ["espree@10.4.0", "", { "dependencies": { "acorn": "^8.15.0", "acorn-jsx": "^5.3.2", "eslint-visitor-keys": "^4.2.1" } }, "sha512-j6PAQ2uUr79PZhBjP5C5fhl8e39FmRnOjsD5lGnWrFU8i2G776tBK7+nP8KuQUTTyAZUwfQqXAgrVH5MbH9CYQ=="],
 
-    "esptool-js": ["esptool-js@0.5.7", "", { "dependencies": { "atob-lite": "^2.0.0", "pako": "^2.1.0", "tslib": "^2.4.1" } }, "sha512-k3pkXU9OTySCd58OUDjuJWNnFjM+QpPWAghxyWPm3zNfaLiP4ex2jNd7Rj0jWPu3/fgvwau236tetsTZrh4x5g=="],
+    "esptool-js": ["esptool-js@0.6.1", "", { "dependencies": { "atob-lite": "^2.0.0", "pako": "^2.1.0", "tslib": "^2.4.1" } }, "sha512-WNgQTfaEIgHyEiT56pI5v7Tq6Pzjc2XaibLxAtWY4v3zE2Ofk5ImkJY5foEUr0JrdkfHWf6rNizAewN4/kSpHw=="],
 
     "esquery": ["esquery@1.6.0", "", { "dependencies": { "estraverse": "^5.1.0" } }, "sha512-ca9pw9fomFcKPvFLXhBKUK90ZvGibiGOvRJNbjljY7s7uq/5YO4BOzcYtJqExdx99rF6aAcnRxHmcUHcz6sQsg=="],
 
